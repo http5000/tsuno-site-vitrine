@@ -1,0 +1,1815 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Tsuno — Formez. Suivez. Pilotez.</title>
+<meta name="description" content="Tsuno centralise vos process, vos formations et le suivi de vos équipes — du premier jour jusqu'à l'excellence opérationnelle." />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='14' fill='%23FFFFFF'/%3E%3Crect x='10' y='14' width='58' height='18' fill='%23A893C8'/%3E%3Crect x='26' y='14' width='20' height='74' fill='%23A893C8'/%3E%3Ccircle cx='74' cy='42' r='11' fill='%23A893C8'/%3E%3C/svg%3E" />
+<link rel="alternate icon" href="/assets/tsuno-icon-mark-parme.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@400;500;600;700&family=Caveat:wght@500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<!-- Tally pour la collecte du formulaire bêta -->
+<script async src="https://tally.so/widgets/embed.js"></script>
+
+<style>
+  /* ============================================================
+     RESET
+  ============================================================ */
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+  body{
+    font-family:'Archivo',system-ui,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    overflow-x:hidden;
+  }
+  img{max-width:100%;display:block}
+  button{font-family:inherit;border:none;background:none;cursor:pointer;color:inherit}
+  a{color:inherit;text-decoration:none}
+  ul,ol{list-style:none}
+
+  /* ============================================================
+     TOKENS — palette plus claire, plus parme
+  ============================================================ */
+  :root{
+    --color-parme:#A893C8;
+    --color-parme-vivid:#8B7BA8;
+    --color-parme-deep:#5F4E80;
+    --color-parme-light:#D6C8E5;
+    --color-parme-pale:#EFE7F5;
+    --color-parme-cream:#F7F1FA;
+
+    --color-cream:#F2EBE0;
+    --color-cream-deep:#E8DECC;
+    --color-white:#FFFFFF;
+    --color-black:#0E0A18;
+
+    --color-bg:#1C1428;
+    --color-bg-2:#2A1F3D;
+    --color-bg-3:#37294F;
+
+    --color-coral:#E8A084;
+    --color-ink:#1A1428;
+
+    --bg:var(--color-bg);
+    --text:var(--color-white);
+    --text-dim:rgba(255,255,255,.62);
+    --text-dim-2:rgba(255,255,255,.42);
+    --border:rgba(214,200,229,.14);
+
+    --font-display:'Archivo Black','Arial Black',sans-serif;
+    --font-sans:'Archivo',system-ui,sans-serif;
+    --font-serif:'Instrument Serif',Georgia,serif;
+    --font-script:'Caveat',cursive;
+    --font-mono:'JetBrains Mono',ui-monospace,monospace;
+
+    --container:1360px;
+    --container-wide:1480px;
+    --gutter:clamp(20px,4vw,56px);
+
+    --r-s:6px;
+    --r-m:14px;
+    --r-l:24px;
+    --r-xl:40px;
+
+    --t-fast:200ms cubic-bezier(.2,.7,.2,1);
+    --t-med:380ms cubic-bezier(.2,.7,.2,1);
+  }
+
+  body::before{
+    content:"";position:fixed;inset:0;z-index:9999;pointer-events:none;
+    background-image:url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.4 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    opacity:.05;mix-blend-mode:overlay;
+  }
+
+  .container{max-width:var(--container);margin:0 auto;padding:0 var(--gutter)}
+  .container-wide{max-width:var(--container-wide);margin:0 auto;padding:0 var(--gutter)}
+
+  section{position:relative;padding-block:clamp(90px,11vw,170px)}
+
+  /* ============================================================
+     TYPO — display ultra heavy
+  ============================================================ */
+  .display{
+    font-family:var(--font-display);
+    text-transform:uppercase;
+    line-height:.86;
+    letter-spacing:-.02em;
+    font-weight:400;
+  }
+
+  .script{
+    font-family:var(--font-script);
+    font-weight:500;
+    line-height:1;
+    letter-spacing:-.005em;
+  }
+
+  .eyebrow{
+    font-family:var(--font-mono);
+    font-size:11px;
+    letter-spacing:.24em;
+    text-transform:uppercase;
+    color:var(--color-parme-light);
+    font-weight:500;
+    display:inline-flex;align-items:center;gap:12px;
+  }
+  .eyebrow::before{
+    content:"";display:inline-block;
+    width:28px;height:1px;background:var(--color-parme);
+  }
+
+  h2.display{font-size:clamp(54px,8.5vw,140px)}
+  h3{font-family:var(--font-sans);font-weight:700;letter-spacing:-.01em;font-size:clamp(22px,2vw,28px)}
+
+  p.lede{
+    font-size:clamp(17px,1.35vw,20px);
+    line-height:1.55;
+    color:var(--text-dim);
+    max-width:580px;
+  }
+
+  /* ============================================================
+     SCROLL PROGRESS
+  ============================================================ */
+  .scroll-progress{
+    position:fixed;top:0;left:0;height:2px;width:0%;
+    background:var(--color-parme);
+    z-index:10000;
+    box-shadow:0 0 10px var(--color-parme);
+    transition:width 60ms linear;
+  }
+
+  /* ============================================================
+     NAV
+  ============================================================ */
+  .nav{
+    position:fixed;top:0;left:0;right:0;z-index:300;
+    padding:20px 0;
+    transition:background var(--t-med),backdrop-filter var(--t-med),padding var(--t-med),border-color var(--t-med);
+    border-bottom:1px solid transparent;
+  }
+  .nav.scrolled{
+    background:rgba(28,20,40,.78);
+    backdrop-filter:blur(20px) saturate(150%);
+    -webkit-backdrop-filter:blur(20px) saturate(150%);
+    padding:12px 0;
+    border-bottom-color:var(--border);
+  }
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;gap:24px}
+  .nav-logo{display:inline-flex;align-items:center;text-decoration:none;transition:opacity var(--t-fast)}
+  .nav-logo:hover{opacity:.75}
+  .nav-logo img{height:30px;width:auto;display:block}
+  .nav-links{display:flex;align-items:center;gap:32px}
+  .nav-links a{
+    font-size:13px;letter-spacing:.01em;
+    color:var(--text-dim);
+    transition:color var(--t-fast);
+  }
+  .nav-links a:hover{color:var(--color-parme-light)}
+  .nav-actions{display:flex;align-items:center;gap:14px}
+
+  .lang-switcher{
+    display:flex;align-items:center;gap:2px;
+    font-family:var(--font-mono);
+    font-size:11px;letter-spacing:.1em;
+    padding:5px 8px;
+    border:1px solid var(--border);
+    border-radius:999px;
+  }
+  .lang-switcher button{
+    padding:2px 8px;border-radius:999px;
+    color:var(--text-dim);
+    transition:color var(--t-fast),background var(--t-fast);
+  }
+  .lang-switcher button.active{
+    color:var(--color-black);background:var(--color-parme-light);
+  }
+
+  /* ============================================================
+     BUTTONS
+  ============================================================ */
+  .btn{
+    display:inline-flex;align-items:center;gap:10px;
+    font-family:var(--font-sans);
+    font-size:14px;font-weight:600;
+    padding:14px 24px;
+    border-radius:999px;
+    border:1px solid transparent;
+    cursor:pointer;
+    transition:all var(--t-med);
+    white-space:nowrap;
+    letter-spacing:.01em;
+  }
+  .btn-primary{background:var(--color-parme-light);color:var(--color-black)}
+  .btn-primary:hover{background:var(--color-white);transform:translateY(-1px)}
+  .btn-ghost{background:transparent;color:var(--text);border-color:var(--border)}
+  .btn-ghost:hover{border-color:var(--color-parme-light);color:var(--color-parme-light)}
+  .btn-arrow{font-size:13px;transition:transform var(--t-fast)}
+  .btn:hover .btn-arrow{transform:translateX(3px)}
+
+  .link-arrow{
+    display:inline-flex;align-items:center;gap:10px;
+    color:var(--color-parme-light);
+    font-size:14px;font-weight:500;
+    padding-bottom:3px;
+    border-bottom:1px solid transparent;
+    transition:border-color var(--t-fast),gap var(--t-fast);
+  }
+  .link-arrow:hover{border-bottom-color:var(--color-parme-light);gap:14px}
+
+  .nav-toggle{
+    display:none;width:42px;height:42px;
+    border:1px solid var(--border);border-radius:999px;
+    position:relative;
+  }
+  .nav-toggle span{
+    position:absolute;left:50%;top:50%;width:16px;height:1.5px;background:var(--text);
+    transform:translate(-50%,-50%);transition:transform var(--t-fast);
+  }
+  .nav-toggle span:nth-child(1){transform:translate(-50%,calc(-50% - 4px))}
+  .nav-toggle span:nth-child(2){transform:translate(-50%,calc(-50% + 4px))}
+  .nav-open .nav-toggle span:nth-child(1){transform:translate(-50%,-50%) rotate(45deg)}
+  .nav-open .nav-toggle span:nth-child(2){transform:translate(-50%,-50%) rotate(-45deg)}
+
+  /* ============================================================
+     HERO — MASSIVE TYPE
+  ============================================================ */
+  .hero{
+    min-height:100vh;
+    padding-top:clamp(140px,15vw,200px);
+    padding-bottom:clamp(60px,8vw,100px);
+    display:flex;flex-direction:column;justify-content:space-between;
+    position:relative;overflow:hidden;
+  }
+  .hero::before{
+    content:"";position:absolute;
+    top:-20%;right:-10%;
+    width:80vw;height:80vw;max-width:1200px;max-height:1200px;
+    background:radial-gradient(circle at center,
+      rgba(168,147,200,.35) 0%,
+      rgba(168,147,200,.15) 30%,
+      rgba(95,78,128,.1) 50%,
+      transparent 70%);
+    filter:blur(40px);
+    pointer-events:none;z-index:0;
+  }
+  .hero::after{
+    content:"";position:absolute;inset:0;
+    background-image:
+      linear-gradient(rgba(214,200,229,.04) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(214,200,229,.04) 1px,transparent 1px);
+    background-size:100px 100px;
+    mask-image:radial-gradient(ellipse at top right,#000 0%,#000 30%,transparent 75%);
+    -webkit-mask-image:radial-gradient(ellipse at top right,#000 0%,#000 30%,transparent 75%);
+    pointer-events:none;z-index:0;
+  }
+  .hero > *{position:relative;z-index:1}
+
+  .hero-top{
+    display:flex;justify-content:space-between;align-items:center;
+    margin-bottom:clamp(40px,6vw,80px);
+    font-family:var(--font-mono);
+    font-size:11px;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--text-dim);
+  }
+  .hero-top .meta-right{color:var(--color-parme-light)}
+
+  .hero-title{
+    font-family:var(--font-display);
+    text-transform:uppercase;
+    font-size:clamp(64px,12vw,190px);
+    line-height:.86;
+    letter-spacing:-.022em;
+    color:var(--color-white);
+  }
+  .hero-title .line{display:block;position:relative}
+  .hero-title .line + .line{margin-top:-0.04em}
+  .hero-title .accent{color:var(--color-parme-light)}
+  .hero-title .dot{color:var(--color-parme)}
+
+  .hero-script{
+    font-family:var(--font-script);
+    font-size:clamp(40px,6.5vw,90px);
+    line-height:1;
+    color:var(--color-parme-light);
+    font-weight:500;
+    margin-top:24px;
+    transform:rotate(-1.5deg);
+    transform-origin:left;
+    display:inline-block;
+  }
+
+  .hero-meta-row{
+    margin-top:clamp(48px,7vw,90px);
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:60px;
+    align-items:start;
+  }
+  .hero-desc{
+    max-width:520px;
+    font-size:clamp(16px,1.25vw,18px);
+    line-height:1.55;
+    color:var(--text-dim);
+  }
+  .hero-actions{
+    display:flex;flex-wrap:wrap;align-items:center;gap:18px;
+  }
+
+  .hero-foot{
+    margin-top:clamp(48px,7vw,80px);
+    padding-top:32px;
+    border-top:1px solid var(--border);
+    display:flex;flex-wrap:wrap;justify-content:space-between;gap:24px;
+    font-family:var(--font-mono);
+    font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+  }
+  .hero-foot .item{color:var(--text-dim)}
+  .hero-foot .item strong{color:var(--color-parme-light);font-weight:500}
+
+  /* ============================================================
+     MANIFESTO — editorial column
+  ============================================================ */
+  .manifesto{
+    background:var(--color-cream);
+    color:var(--color-ink);
+    border-top:1px solid rgba(168,147,200,.2);
+  }
+  .manifesto-inner{
+    display:grid;
+    grid-template-columns:minmax(80px,1fr) minmax(0,3fr) minmax(120px,1fr);
+    gap:clamp(20px,3vw,48px);
+    align-items:start;
+  }
+  .manifesto .col-left{
+    font-family:var(--font-mono);
+    font-size:11px;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+    color:var(--color-parme-deep);
+    padding-top:8px;
+  }
+  .manifesto .col-left .num{
+    font-family:var(--font-display);
+    font-size:64px;
+    color:var(--color-parme-deep);
+    line-height:1;
+    margin-bottom:14px;
+    display:block;
+  }
+  .manifesto .col-main{
+    font-family:var(--font-serif);
+    font-size:clamp(22px,2.2vw,32px);
+    line-height:1.4;
+    color:#241B36;
+    letter-spacing:-.005em;
+  }
+  .manifesto .col-main em{
+    font-style:italic;
+    color:var(--color-parme-deep);
+    font-weight:400;
+  }
+  .manifesto .col-main .drop{
+    font-family:var(--font-display);
+    text-transform:uppercase;
+    float:left;
+    font-size:clamp(96px,11vw,140px);
+    line-height:.85;
+    color:var(--color-parme);
+    margin-right:18px;
+    margin-top:8px;
+    margin-bottom:-6px;
+  }
+  .manifesto .col-main .highlight{
+    background:linear-gradient(180deg,transparent 62%,rgba(168,147,200,.45) 62%);
+    padding:0 2px;
+  }
+  .manifesto .col-right{
+    font-family:var(--font-mono);
+    font-size:12px;line-height:1.55;
+    color:var(--color-parme-deep);
+    padding-top:8px;
+  }
+  .manifesto .col-right .note{
+    display:flex;gap:10px;margin-bottom:18px;
+  }
+  .manifesto .col-right .note .marker{
+    color:var(--color-parme);font-weight:500;flex-shrink:0;
+  }
+  .manifesto .col-right .signature{
+    margin-top:32px;font-family:var(--font-script);
+    font-size:32px;color:var(--color-parme-deep);
+    transform:rotate(-2deg);display:inline-block;
+  }
+
+  /* ============================================================
+     SOMMAIRE — index / TOC style
+  ============================================================ */
+  .toc{background:var(--color-bg);border-top:1px solid var(--border)}
+  .toc-head{
+    display:grid;grid-template-columns:1fr 1fr;
+    gap:60px;margin-bottom:80px;align-items:end;
+  }
+  .toc-head h2{max-width:14ch}
+  .toc-list{border-top:1px solid var(--border)}
+  .toc-row{
+    display:grid;
+    grid-template-columns:80px 1fr 2fr auto;
+    gap:clamp(20px,3vw,48px);
+    padding:clamp(28px,4vw,44px) 0;
+    border-bottom:1px solid var(--border);
+    align-items:baseline;
+    position:relative;
+    transition:padding var(--t-med);
+  }
+  .toc-row::before{
+    content:"";position:absolute;left:0;right:0;top:0;
+    height:1px;background:var(--color-parme);
+    transform:scaleX(0);transform-origin:left;
+    transition:transform var(--t-med);
+  }
+  .toc-row:hover{padding-left:12px}
+  .toc-row:hover::before{transform:scaleX(.4)}
+  .toc-num{
+    font-family:var(--font-mono);
+    font-size:13px;letter-spacing:.15em;
+    color:var(--color-parme-light);
+  }
+  .toc-title{
+    font-family:var(--font-display);
+    text-transform:uppercase;
+    font-size:clamp(28px,3.5vw,52px);
+    line-height:.95;
+    letter-spacing:-.015em;
+    color:var(--text);
+  }
+  .toc-desc{
+    color:var(--text-dim);
+    font-size:15px;line-height:1.55;
+    max-width:500px;
+  }
+  .toc-mark{
+    font-family:var(--font-script);
+    font-size:32px;
+    color:var(--color-parme-light);
+    transform:rotate(-8deg);
+    transform-origin:center;
+    transition:transform var(--t-med);
+  }
+  .toc-row:hover .toc-mark{transform:rotate(0)}
+
+  /* ============================================================
+     BENTO — avantages asymétrique
+  ============================================================ */
+  .bento{background:var(--color-cream);color:var(--color-ink)}
+  .bento .eyebrow{color:var(--color-parme-deep)}
+  .bento .eyebrow::before{background:var(--color-parme-deep)}
+  .bento-head{
+    display:grid;grid-template-columns:1.3fr 1fr;
+    gap:60px;align-items:end;margin-bottom:60px;
+  }
+  .bento-head h2{color:var(--color-ink);max-width:16ch}
+  .bento-head h2 .ink{color:var(--color-parme-deep)}
+  .bento-head p{color:rgba(26,20,40,.65);max-width:460px}
+
+  .bento-grid{
+    display:grid;
+    grid-template-columns:repeat(12,1fr);
+    grid-auto-rows:minmax(180px,auto);
+    gap:14px;
+  }
+  .b-card{
+    border-radius:var(--r-l);
+    padding:32px;
+    display:flex;flex-direction:column;
+    position:relative;overflow:hidden;
+    transition:transform var(--t-med);
+  }
+  .b-card:hover{transform:translateY(-3px)}
+  .b-num{
+    font-family:var(--font-mono);
+    font-size:11px;
+    letter-spacing:.15em;
+    text-transform:uppercase;
+    margin-bottom:auto;
+    opacity:.6;
+  }
+  .b-card h4{
+    font-family:var(--font-display);
+    text-transform:uppercase;
+    font-size:clamp(22px,2vw,32px);
+    line-height:.95;
+    letter-spacing:-.01em;
+    margin-bottom:12px;
+  }
+  .b-card p{font-size:14px;line-height:1.5;opacity:.7;max-width:280px}
+
+  .b1{grid-column:span 5;grid-row:span 2;background:var(--color-parme-deep);color:var(--color-white)}
+  .b1 .b-mega{
+    font-family:var(--font-display);
+    font-size:clamp(120px,16vw,200px);
+    line-height:.85;
+    color:var(--color-parme-light);
+    margin-top:auto;
+    letter-spacing:-.03em;
+  }
+  .b1 .b-mega .small{
+    font-family:var(--font-script);
+    font-size:.35em;
+    color:var(--color-coral);
+    vertical-align:super;
+    margin-left:8px;
+  }
+  .b1 h4{margin-bottom:auto;font-size:clamp(20px,1.5vw,24px)}
+
+  .b2{grid-column:span 4;background:var(--color-parme);color:var(--color-white)}
+  .b3{grid-column:span 3;background:var(--color-ink);color:var(--color-parme-light)}
+  .b3 h4{color:var(--color-white)}
+  .b3 .b-icon{
+    width:48px;height:48px;
+    border:1.5px solid var(--color-parme-light);
+    border-radius:50%;
+    position:relative;
+    margin-bottom:auto;
+  }
+  .b3 .b-icon::after,
+  .b3 .b-icon::before{
+    content:"";position:absolute;left:50%;top:50%;
+    background:var(--color-parme-light);
+    transform:translate(-50%,-50%);
+  }
+  .b3 .b-icon::after{width:18px;height:1.5px}
+  .b3 .b-icon::before{width:1.5px;height:18px}
+
+  .b4{grid-column:span 4;background:var(--color-white);color:var(--color-ink);border:1px solid rgba(168,147,200,.3)}
+  .b4 .quote{
+    font-family:var(--font-serif);
+    font-style:italic;
+    font-size:clamp(20px,1.8vw,26px);
+    line-height:1.25;
+    color:var(--color-ink);
+    margin-bottom:auto;
+    letter-spacing:-.005em;
+  }
+  .b4 .quote::before{content:"« "}
+  .b4 .quote::after{content:" »"}
+  .b4 .cite{
+    font-family:var(--font-mono);
+    font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--color-parme-deep);
+  }
+
+  .b5{grid-column:span 5;background:var(--color-cream-deep);color:var(--color-ink)}
+  .b5 h4{color:var(--color-parme-deep)}
+  .b5 .bars{
+    margin-top:auto;
+    display:flex;align-items:flex-end;gap:6px;height:60px;
+  }
+  .b5 .bars .bar{
+    flex:1;background:var(--color-parme);
+    border-radius:3px 3px 0 0;opacity:.4;
+  }
+  .b5 .bars .bar.hl{opacity:1;background:var(--color-parme-deep)}
+
+  .b6{grid-column:span 3;grid-row:span 2;background:var(--color-parme-pale);color:var(--color-ink);border:1px solid rgba(168,147,200,.3)}
+  .b6 h4{color:var(--color-parme-deep)}
+  .b6 .b-script{
+    font-family:var(--font-script);
+    font-size:clamp(54px,5vw,78px);
+    line-height:.95;
+    color:var(--color-parme-deep);
+    margin-top:auto;
+    transform:rotate(-3deg);
+    transform-origin:left bottom;
+  }
+
+  /* ============================================================
+     SPEC SHEET — fonctionnalités
+  ============================================================ */
+  .specs{background:var(--color-bg)}
+  .specs-head{
+    display:grid;grid-template-columns:1fr 1fr;
+    gap:60px;margin-bottom:80px;
+  }
+  .specs-head h2{max-width:14ch}
+  .specs-head .right{padding-top:60px}
+
+  .spec-row{
+    display:grid;
+    grid-template-columns:120px 280px 1fr 200px;
+    gap:clamp(20px,3vw,40px);
+    padding:clamp(36px,5vw,60px) 0;
+    border-top:1px solid var(--border);
+    align-items:start;
+  }
+  .spec-row:last-of-type{border-bottom:1px solid var(--border)}
+  .spec-id{
+    font-family:var(--font-mono);
+    font-size:13px;letter-spacing:.12em;
+    color:var(--color-parme);
+  }
+  .spec-name{
+    font-family:var(--font-display);
+    text-transform:uppercase;
+    font-size:clamp(24px,2.6vw,38px);
+    line-height:.95;
+    letter-spacing:-.015em;
+    color:var(--text);
+  }
+  .spec-name .ital{
+    font-family:var(--font-script);
+    font-size:.65em;
+    text-transform:none;
+    color:var(--color-parme-light);
+    font-weight:500;
+    display:block;margin-top:6px;
+    transform:rotate(-2deg);
+    transform-origin:left;
+  }
+  .spec-desc{
+    color:var(--text-dim);
+    font-size:15px;line-height:1.6;
+  }
+  .spec-tags{
+    display:flex;flex-direction:column;gap:8px;align-items:flex-start;
+  }
+  .spec-tag{
+    font-family:var(--font-mono);
+    font-size:11px;letter-spacing:.1em;
+    padding:5px 10px;
+    border:1px solid var(--border);
+    border-radius:999px;
+    color:var(--text-dim);
+    text-transform:uppercase;
+  }
+  .spec-tag.live{
+    border-color:var(--color-parme);
+    color:var(--color-parme-light);
+  }
+
+  /* ============================================================
+     EARLY ACCESS — editorial pop
+  ============================================================ */
+  .early{
+    background:var(--color-parme);
+    color:var(--color-white);
+    overflow:hidden;position:relative;
+  }
+  .early::before{
+    content:"";position:absolute;inset:0;
+    background-image:
+      radial-gradient(circle at 20% 20%,rgba(255,255,255,.08) 0%,transparent 40%),
+      radial-gradient(circle at 85% 80%,rgba(45,31,78,.15) 0%,transparent 50%);
+    pointer-events:none;
+  }
+  .early-inner{position:relative;z-index:1;text-align:center}
+  .early .eyebrow{color:rgba(255,255,255,.75)}
+  .early .eyebrow::before{background:rgba(255,255,255,.7)}
+  .early-title{
+    font-family:var(--font-display);
+    text-transform:uppercase;
+    font-size:clamp(60px,10vw,160px);
+    line-height:.86;
+    letter-spacing:-.025em;
+    color:var(--color-white);
+    margin:32px 0 16px;
+  }
+  .early-script{
+    font-family:var(--font-script);
+    font-size:clamp(40px,5vw,72px);
+    line-height:1;
+    color:var(--color-parme-pale);
+    transform:rotate(-2deg);
+    display:inline-block;
+    margin-bottom:40px;
+  }
+  .early-sub{
+    color:rgba(255,255,255,.82);
+    max-width:520px;margin:0 auto 56px;
+    font-size:17px;line-height:1.55;
+  }
+  .early-form{
+    display:flex;gap:0;
+    max-width:640px;margin:0 auto;
+    background:var(--color-white);
+    border-radius:999px;
+    padding:6px;
+    box-shadow:0 20px 60px -20px rgba(28,20,40,.5);
+  }
+  .early-form input{
+    flex:1;border:none;background:transparent;
+    padding:16px 22px;
+    font-family:var(--font-sans);
+    font-size:15px;color:var(--color-ink);
+    outline:none;min-width:0;
+  }
+  .early-form input::placeholder{color:rgba(26,20,40,.4)}
+  .early-form input + input{border-left:1px solid rgba(26,20,40,.1)}
+  .early-form button{
+    background:var(--color-ink);color:var(--color-white);
+    border-radius:999px;
+    padding:14px 28px;
+    font-size:14px;font-weight:600;
+    transition:background var(--t-fast);
+    white-space:nowrap;
+  }
+  .early-form button:hover{background:var(--color-parme-deep)}
+  .early-note{
+    margin-top:24px;
+    font-family:var(--font-mono);
+    font-size:11px;letter-spacing:.15em;text-transform:uppercase;
+    color:rgba(255,255,255,.7);
+  }
+  .early-success{
+    display:none;
+    background:rgba(255,255,255,.1);
+    border:1px solid rgba(255,255,255,.2);
+    backdrop-filter:blur(10px);
+    border-radius:24px;
+    padding:48px 36px;
+    max-width:560px;margin:0 auto;
+    color:var(--color-white);
+  }
+  .early-success h3{
+    font-family:var(--font-script);
+    font-size:48px;
+    color:var(--color-parme-pale);
+    margin-bottom:14px;
+    transform:rotate(-2deg);
+    display:inline-block;
+  }
+  .early.is-submitted .early-form,
+  .early.is-submitted .early-note{display:none}
+  .early.is-submitted .early-success{display:block}
+
+  /* ============================================================
+     FAQ — interview style
+  ============================================================ */
+  .faq{background:var(--color-cream);color:var(--color-ink)}
+  .faq .eyebrow{color:var(--color-parme-deep)}
+  .faq .eyebrow::before{background:var(--color-parme-deep)}
+  .faq-head{
+    display:grid;grid-template-columns:1fr 1fr;
+    gap:60px;align-items:end;margin-bottom:80px;
+  }
+  .faq-head h2{color:var(--color-ink);max-width:12ch}
+  .faq-head p{color:rgba(26,20,40,.65);max-width:460px}
+
+  .faq-list{display:flex;flex-direction:column}
+  .faq-item{
+    display:grid;
+    grid-template-columns:80px 1fr 1.4fr;
+    gap:clamp(20px,3vw,48px);
+    padding:clamp(28px,4vw,44px) 0;
+    border-top:1px solid rgba(26,20,40,.12);
+    align-items:start;
+  }
+  .faq-item:last-child{border-bottom:1px solid rgba(26,20,40,.12)}
+  .faq-num{
+    font-family:var(--font-mono);
+    font-size:12px;letter-spacing:.18em;
+    color:var(--color-parme-deep);
+    padding-top:8px;
+  }
+  .faq-q{
+    font-family:var(--font-serif);
+    font-style:italic;
+    font-size:clamp(22px,2.2vw,30px);
+    line-height:1.15;
+    color:var(--color-ink);
+    letter-spacing:-.01em;
+  }
+  .faq-q::before{
+    content:"Q.";
+    display:block;
+    font-family:var(--font-mono);
+    font-style:normal;
+    font-size:11px;letter-spacing:.2em;
+    color:var(--color-parme-deep);
+    margin-bottom:6px;
+  }
+  .faq-a{
+    font-family:var(--font-sans);
+    font-size:15px;line-height:1.65;
+    color:rgba(26,20,40,.75);
+  }
+  .faq-a::before{
+    content:"R.";
+    display:block;
+    font-family:var(--font-mono);
+    font-size:11px;letter-spacing:.2em;
+    color:var(--color-parme-deep);
+    margin-bottom:6px;
+  }
+
+  /* ============================================================
+     FOOTER
+  ============================================================ */
+  footer{
+    background:var(--color-ink);
+    padding:80px 0 32px;
+    border-top:1px solid var(--border);
+    overflow:hidden;
+    position:relative;
+  }
+  .footer-mega{
+    font-family:var(--font-display);
+    text-transform:uppercase;
+    font-size:clamp(60px,15vw,220px);
+    line-height:.85;
+    letter-spacing:-.025em;
+    color:rgba(214,200,229,.06);
+    text-align:center;
+    margin-bottom:32px;
+    pointer-events:none;
+    user-select:none;
+  }
+  .footer-inner{
+    position:relative;
+    display:flex;flex-direction:column;align-items:center;gap:28px;
+  }
+  .footer-logo img{height:42px;width:auto;display:block}
+  .footer-logo{display:inline-flex;align-items:center;transition:opacity var(--t-fast)}
+  .footer-logo:hover{opacity:.75}
+  .footer-tagline{
+    font-family:var(--font-script);
+    font-size:32px;
+    color:var(--color-parme-light);
+    transform:rotate(-1.5deg);
+    display:inline-block;
+  }
+  .footer-social{display:flex;gap:14px}
+  .footer-social a{
+    width:42px;height:42px;
+    border:1px solid var(--border);
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    transition:border-color var(--t-fast),background var(--t-fast),color var(--t-fast);
+    color:var(--text-dim);
+  }
+  .footer-social a:hover{
+    background:var(--color-parme-light);
+    border-color:var(--color-parme-light);
+    color:var(--color-ink);
+  }
+  .footer-social svg{width:16px;height:16px;fill:currentColor}
+  .footer-meta{
+    border-top:1px solid var(--border);
+    margin-top:24px;padding-top:24px;
+    width:100%;
+    display:flex;flex-wrap:wrap;justify-content:space-between;gap:14px;
+    font-family:var(--font-mono);
+    font-size:11px;letter-spacing:.15em;text-transform:uppercase;
+    color:var(--text-dim);
+  }
+  .footer-meta a:hover{color:var(--color-parme-light)}
+  .footer-meta .yumea-link{
+    color:var(--color-parme-light);
+    border-bottom:1px solid rgba(214,200,229,.3);
+    transition:border-color var(--t-fast),color var(--t-fast);
+  }
+  .footer-meta .yumea-link:hover{
+    color:var(--color-white);
+    border-bottom-color:var(--color-parme-light);
+  }
+
+  /* ============================================================
+     REVEAL
+  ============================================================ */
+  [data-reveal]{
+    opacity:0;transform:translateY(28px);
+    transition:opacity 800ms cubic-bezier(.2,.7,.2,1),transform 800ms cubic-bezier(.2,.7,.2,1);
+  }
+  [data-reveal].is-visible{opacity:1;transform:none}
+  [data-reveal-delay="1"]{transition-delay:80ms}
+  [data-reveal-delay="2"]{transition-delay:160ms}
+  [data-reveal-delay="3"]{transition-delay:240ms}
+  [data-reveal-delay="4"]{transition-delay:320ms}
+  [data-reveal-delay="5"]{transition-delay:400ms}
+  [data-reveal-delay="6"]{transition-delay:480ms}
+  @media (prefers-reduced-motion:reduce){
+    [data-reveal]{opacity:1;transform:none;transition:none}
+  }
+
+  /* ============================================================
+     RESPONSIVE
+  ============================================================ */
+  @media (max-width:1200px){
+    .bento-grid{grid-template-columns:repeat(6,1fr)}
+    .b1{grid-column:span 6;grid-row:span 1}
+    .b2{grid-column:span 3}
+    .b3{grid-column:span 3}
+    .b4{grid-column:span 6}
+    .b5{grid-column:span 4}
+    .b6{grid-column:span 2;grid-row:span 1}
+
+    .spec-row{
+      grid-template-columns:80px 1fr 1fr;
+      grid-template-areas:"id name name" "id desc tags";
+    }
+    .spec-row .spec-id{grid-area:id}
+    .spec-row .spec-name{grid-area:name}
+    .spec-row .spec-desc{grid-area:desc}
+    .spec-row .spec-tags{grid-area:tags;flex-direction:row;flex-wrap:wrap}
+
+    .toc-row{grid-template-columns:60px 1fr 1fr auto}
+  }
+
+  @media (max-width:768px){
+    .nav-links{display:none}
+    .nav-actions .btn{display:none}
+    .nav-toggle{display:block}
+    .nav.menu-open .nav-links{
+      display:flex;
+      position:absolute;top:100%;left:0;right:0;
+      flex-direction:column;gap:0;
+      background:rgba(28,20,40,.97);
+      backdrop-filter:blur(20px);
+      border-top:1px solid var(--border);
+      padding:20px var(--gutter);
+    }
+    .nav.menu-open .nav-links a{
+      padding:16px 0;border-bottom:1px solid var(--border);
+      font-size:18px;color:var(--text);
+    }
+
+    .hero{min-height:auto;padding-top:120px}
+    .hero-meta-row{grid-template-columns:1fr;gap:30px}
+    .hero-foot{font-size:10px;letter-spacing:.14em;gap:12px}
+    .hero-foot .item{flex:1 1 calc(50% - 12px)}
+
+    .manifesto-inner{grid-template-columns:1fr;gap:24px}
+    .manifesto .col-right{order:3;border-top:1px solid rgba(168,147,200,.3);padding-top:24px}
+    .manifesto .col-main .drop{font-size:120px}
+
+    .toc-head{grid-template-columns:1fr;gap:20px}
+    .toc-row{
+      grid-template-columns:1fr;
+      grid-template-areas:"num" "title" "desc" "mark";
+      gap:14px;
+    }
+    .toc-num{grid-area:num}
+    .toc-title{grid-area:title}
+    .toc-desc{grid-area:desc}
+    .toc-mark{grid-area:mark;justify-self:start}
+
+    .bento-head{grid-template-columns:1fr;gap:20px}
+    .bento-grid{grid-template-columns:1fr;grid-auto-rows:auto}
+    .b1,.b2,.b3,.b4,.b5,.b6{grid-column:span 1;grid-row:auto}
+
+    .specs-head{grid-template-columns:1fr;gap:20px}
+    .specs-head .right{padding-top:0}
+    .spec-row{
+      grid-template-columns:1fr;
+      grid-template-areas:"id" "name" "desc" "tags";
+      gap:14px;
+    }
+
+    .early-form{flex-direction:column;border-radius:24px;padding:8px}
+    .early-form input + input{border-left:none;border-top:1px solid rgba(26,20,40,.1)}
+    .early-form button{padding:16px}
+
+    .faq-head{grid-template-columns:1fr;gap:20px}
+    .faq-item{
+      grid-template-columns:1fr;
+      grid-template-areas:"num" "q" "a";
+      gap:16px;
+    }
+    .faq-num{grid-area:num}
+    .faq-q{grid-area:q}
+    .faq-a{grid-area:a}
+
+    .footer-meta{flex-direction:column;text-align:center;align-items:center}
+  }
+
+  @media (max-width:480px){
+    .hero-title{font-size:18vw}
+    .hero-actions{width:100%}
+    .hero-actions .btn{width:100%;justify-content:center}
+  }
+  /* ============================================================
+     COOKIE BANNER
+  ============================================================ */
+  .cookie-banner{
+    position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
+    z-index:10001;
+    background:rgba(42,31,61,.95);
+    backdrop-filter:blur(16px) saturate(140%);
+    -webkit-backdrop-filter:blur(16px) saturate(140%);
+    border:1px solid rgba(214,200,229,.2);
+    border-radius:var(--r-l);
+    padding:14px 20px;
+    display:flex;align-items:center;gap:16px;
+    max-width:min(640px, calc(100vw - 40px));
+    box-shadow:0 8px 40px rgba(0,0,0,.5);
+    transition:opacity var(--t-med),transform var(--t-med);
+  }
+  .cookie-banner.hidden{
+    opacity:0;transform:translateX(-50%) translateY(16px);pointer-events:none;
+  }
+  .cookie-text{
+    font-family:var(--font-mono);
+    font-size:11px;letter-spacing:.06em;
+    color:var(--text-dim);
+    line-height:1.5;
+    flex:1;
+  }
+  .cookie-text a{
+    color:var(--color-parme-light);
+    border-bottom:1px solid rgba(214,200,229,.3);
+    transition:color var(--t-fast);
+  }
+  .cookie-text a:hover{color:var(--color-white)}
+  .cookie-close{
+    width:32px;height:32px;border-radius:50%;
+    background:rgba(214,200,229,.12);
+    border:1px solid rgba(214,200,229,.2);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--text-dim);
+    font-size:16px;line-height:1;
+    transition:background var(--t-fast),color var(--t-fast);
+    flex-shrink:0;
+  }
+  .cookie-close:hover{background:var(--color-parme-deep);color:var(--color-white)}
+  @media(max-width:540px){
+    .cookie-banner{bottom:16px;padding:12px 16px;gap:12px;border-radius:var(--r-m)}
+  }
+</style>
+</head>
+<body>
+
+<div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+
+<!-- COOKIE BANNER -->
+<div class="cookie-banner" id="cookieBanner" role="complementary" aria-label="Information cookies" aria-live="polite">
+  <p class="cookie-text">
+    Ce site utilise uniquement des cookies techniques nécessaires à sa sécurité (Cloudflare) et au formulaire d'inscription. Aucun cookie publicitaire.
+    <a href="/politique-de-confidentialite.html#cookies">En savoir plus</a>
+  </p>
+  <button class="cookie-close" id="cookieClose" aria-label="Fermer" title="Fermer">×</button>
+</div>
+
+<!-- NAV -->
+<nav class="nav" id="nav" aria-label="Navigation principale">
+  <div class="container-wide nav-inner">
+    <a href="#top" class="nav-logo" aria-label="Tsuno — Accueil">
+      <img src="/assets/tsuno-logo-white.png" alt="Tsuno" />
+    </a>
+    <ul class="nav-links">
+      <li><a href="#manifesto" data-i18n="nav.about">Manifeste</a></li>
+      <li><a href="#toc" data-i18n="nav.advantages">Méthode</a></li>
+      <li><a href="#bento" data-i18n="nav.benefits">Bénéfices</a></li>
+      <li><a href="#specs" data-i18n="nav.features">Fonctions</a></li>
+      <li><a href="#faq" data-i18n="nav.faq">FAQ</a></li>
+    </ul>
+    <div class="nav-actions">
+      <div class="lang-switcher" role="group" aria-label="Langue">
+        <button type="button" data-lang="fr" class="active" aria-pressed="true">FR</button>
+        <button type="button" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+      <a href="#early" class="btn btn-primary">
+        <span data-i18n="nav.cta">Rejoindre la bêta</span>
+        <span class="btn-arrow" aria-hidden="true">→</span>
+      </a>
+      <button class="nav-toggle" aria-label="Ouvrir le menu" aria-expanded="false">
+        <span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero" id="top">
+  <div class="container-wide">
+    <div class="hero-top">
+      <span data-i18n="hero.top1">Tsuno · Plateforme · Restauration</span>
+      <span class="meta-right" data-i18n="hero.top2">Bêta privée · Été 2026</span>
+    </div>
+
+    <h1 class="hero-title" data-reveal>
+      <span class="line" data-i18n="hero.line1">FORMEZ.</span>
+      <span class="line accent" data-i18n="hero.line2">SUIVEZ.</span>
+      <span class="line"><span data-i18n="hero.line3">PILOTEZ</span><span class="dot">.</span></span>
+    </h1>
+
+    <span class="hero-script" data-reveal data-reveal-delay="1" data-i18n="hero.script">
+      (toute votre brigade, depuis un seul outil.)
+    </span>
+
+    <div class="hero-meta-row" data-reveal data-reveal-delay="2">
+      <p class="hero-desc" data-i18n="hero.desc">
+        Tsuno centralise vos process, vos formations et le suivi de vos équipes. Du premier jour de votre nouveau commis jusqu'à l'évaluation annuelle de votre chef de salle — tout vit au même endroit.
+      </p>
+      <div class="hero-actions">
+        <a href="#early" class="btn btn-primary">
+          <span data-i18n="hero.cta1">Rejoindre la bêta</span>
+          <span class="btn-arrow" aria-hidden="true">→</span>
+        </a>
+        <a href="#manifesto" class="link-arrow">
+          <span data-i18n="hero.cta2">Lire le manifeste</span>
+          <span aria-hidden="true">↓</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-foot" data-reveal data-reveal-delay="3">
+      <span class="item"><strong>8</strong>&nbsp;<span data-i18n="hero.foot1">modules natifs</span></span>
+      <span class="item"><strong>4</strong>&nbsp;<span data-i18n="hero.foot2">rôles paramétrables</span></span>
+      <span class="item"><strong>1</strong>&nbsp;<span data-i18n="hero.foot3">plateforme unique</span></span>
+      <span class="item" data-i18n="hero.foot4">Conçu à Lyon · Hébergé en Europe</span>
+    </div>
+  </div>
+</header>
+
+<!-- MANIFESTO -->
+<section class="manifesto" id="manifesto">
+  <div class="container manifesto-inner">
+
+    <aside class="col-left" data-reveal>
+      <span class="num">I.</span>
+      <span data-i18n="man.label">Le manifeste</span>
+    </aside>
+
+    <div class="col-main" data-reveal data-reveal-delay="1">
+      <p>
+        <span class="drop">T</span><span data-i18n="man.body1">suno est né d'une obsession très simple : </span><em data-i18n="man.body2">transmettre un savoir-faire ne devrait jamais être un goulot d'étranglement.</em> <span data-i18n="man.body3">Dans la restauration, on forme dans le bruit, dans la précipitation, entre deux services. On répète vingt fois la même chose à vingt personnes différentes. Et trois mois plus tard, </span><span class="highlight" data-i18n="man.body4">la moitié de ce qu'on a appris s'est dilué.</span> <span data-i18n="man.body5">Tsuno arrête cette hémorragie. Vos process deviennent un produit. Vos équipes deviennent une école. Et l'excellence, enfin, devient industrielle.</span>
+      </p>
+    </div>
+
+    <aside class="col-right" data-reveal data-reveal-delay="2">
+      <div class="note">
+        <span class="marker">a.</span>
+        <span data-i18n="man.note1">Issu du terrain — Kajirō Sushi, Lyon.</span>
+      </div>
+      <div class="note">
+        <span class="marker">b.</span>
+        <span data-i18n="man.note2">Universalisé pour toute enseigne, taille ou cuisine.</span>
+      </div>
+      <div class="note">
+        <span class="marker">c.</span>
+        <span data-i18n="man.note3">Pensé d'abord pour les managers de terrain.</span>
+      </div>
+      <span class="signature" data-i18n="man.sig">— l'équipe Tsuno.</span>
+    </aside>
+
+  </div>
+</section>
+
+<!-- TOC -->
+<section class="toc" id="toc">
+  <div class="container">
+    <div class="toc-head">
+      <div data-reveal>
+        <span class="eyebrow"><span data-i18n="toc.eyebrow">La méthode</span></span>
+        <h2 class="display" style="margin-top:24px" data-i18n="toc.title">Quatre principes. Zéro compromis.</h2>
+      </div>
+      <p class="lede" data-reveal data-reveal-delay="1" data-i18n="toc.lede">
+        Tsuno ne réinvente pas la formation. Il la rend transmissible, mesurable, et reproductible — à grande échelle.
+      </p>
+    </div>
+
+    <ol class="toc-list">
+      <li class="toc-row" data-reveal>
+        <span class="toc-num">№ 01</span>
+        <span class="toc-title" data-i18n="toc.p1.title">Centralisation</span>
+        <span class="toc-desc" data-i18n="toc.p1.desc">Une source unique pour tous vos process, accessible partout, mise à jour en temps réel. Plus de Drive éclaté, plus de WhatsApp qui s'efface.</span>
+        <span class="toc-mark" aria-hidden="true">✱</span>
+      </li>
+      <li class="toc-row" data-reveal data-reveal-delay="1">
+        <span class="toc-num">№ 02</span>
+        <span class="toc-title" data-i18n="toc.p2.title">Hiérarchie</span>
+        <span class="toc-desc" data-i18n="toc.p2.desc">Chaque rôle voit ce qui le concerne — du commis au directeur d'exploitation. Les bons accès au bon moment, sans usine à gaz.</span>
+        <span class="toc-mark" aria-hidden="true">✻</span>
+      </li>
+      <li class="toc-row" data-reveal data-reveal-delay="2">
+        <span class="toc-num">№ 03</span>
+        <span class="toc-title" data-i18n="toc.p3.title">Progression</span>
+        <span class="toc-desc" data-i18n="toc.p3.desc">Des parcours séquencés, qui s'adaptent au poste, au site, au niveau et au rythme de chaque apprenant. Personne ne saute une marche.</span>
+        <span class="toc-mark" aria-hidden="true">✤</span>
+      </li>
+      <li class="toc-row" data-reveal data-reveal-delay="3">
+        <span class="toc-num">№ 04</span>
+        <span class="toc-title" data-i18n="toc.p4.title">Mesure</span>
+        <span class="toc-desc" data-i18n="toc.p4.desc">Avancement, évaluations, objectifs : tout est visible, mesurable, factuel. Vous arrêtez de piloter à l'instinct.</span>
+        <span class="toc-mark" aria-hidden="true">✣</span>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- BENTO -->
+<section class="bento" id="bento">
+  <div class="container-wide">
+    <div class="bento-head">
+      <div data-reveal>
+        <span class="eyebrow"><span data-i18n="bento.eyebrow">Ce qui change</span></span>
+        <h2 class="display" style="margin-top:24px" data-i18n="bento.title">Le quotidien <span class="ink">de vos managers</span>, repensé.</h2>
+      </div>
+      <p class="lede" data-reveal data-reveal-delay="1" data-i18n="bento.lede">
+        Moins de temps perdu, plus de cohérence, des équipes formées au même standard d'exigence — sur tous vos sites.
+      </p>
+    </div>
+
+    <div class="bento-grid">
+      <div class="b-card b1" data-reveal>
+        <span class="b-num">A — Onboarding</span>
+        <h4 data-i18n="bento.b1.title">Un nouveau, opérationnel en quelques jours.</h4>
+        <span class="b-mega">2×<span class="small" data-i18n="bento.b1.acc">plus vite</span></span>
+      </div>
+
+      <div class="b-card b2" data-reveal data-reveal-delay="1">
+        <span class="b-num">B — Sur mesure</span>
+        <h4 data-i18n="bento.b2.title">Chaque parcours s'adapte.</h4>
+        <p data-i18n="bento.b2.desc">Au poste, au site, au niveau. Au lieu d'un seul programme générique pour tout le monde.</p>
+      </div>
+
+      <div class="b-card b3" data-reveal data-reveal-delay="2">
+        <div class="b-icon" aria-hidden="true"></div>
+        <h4 data-i18n="bento.b3.title">Base centralisée</h4>
+        <p data-i18n="bento.b3.desc">Recettes, fiches techniques, procédures. Toujours à jour.</p>
+      </div>
+
+      <div class="b-card b4" data-reveal data-reveal-delay="3">
+        <p class="quote" data-i18n="bento.b4.quote">Mes managers passaient leur dimanche à faire des plannings de formation. Maintenant ils passent leur dimanche en famille.</p>
+        <span class="cite" data-i18n="bento.b4.cite">— Directeur d'exploitation, 14 sites</span>
+      </div>
+
+      <div class="b-card b5" data-reveal data-reveal-delay="4">
+        <span class="b-num">C — Suivi temps réel</span>
+        <h4 data-i18n="bento.b5.title">Vous voyez qui progresse. Et qui décroche.</h4>
+        <div class="bars" aria-hidden="true">
+          <span class="bar" style="height:30%"></span>
+          <span class="bar" style="height:55%"></span>
+          <span class="bar hl" style="height:80%"></span>
+          <span class="bar" style="height:45%"></span>
+          <span class="bar hl" style="height:90%"></span>
+          <span class="bar" style="height:60%"></span>
+          <span class="bar hl" style="height:75%"></span>
+          <span class="bar" style="height:50%"></span>
+        </div>
+      </div>
+
+      <div class="b-card b6" data-reveal data-reveal-delay="5">
+        <span class="b-num">D — Culture</span>
+        <h4 data-i18n="bento.b6.title">Le même standard, partout.</h4>
+        <span class="b-script" data-i18n="bento.b6.script">enfin.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SPECS -->
+<section class="specs" id="specs">
+  <div class="container-wide">
+    <div class="specs-head">
+      <div data-reveal>
+        <span class="eyebrow"><span data-i18n="specs.eyebrow">Fonctions natives</span></span>
+        <h2 class="display" style="margin-top:24px" data-i18n="specs.title">Tout ce dont vos managers ont besoin.</h2>
+      </div>
+      <div class="right" data-reveal data-reveal-delay="1">
+        <p class="lede" data-i18n="specs.lede">
+          Cinq modules natifs, conçus pour fonctionner ensemble. Pas d'intégrations bricolées, pas de modules vendus séparément.
+        </p>
+      </div>
+    </div>
+
+    <div class="spec-list">
+
+      <article class="spec-row" data-reveal>
+        <span class="spec-id">F · 01</span>
+        <h3 class="spec-name">
+          <span data-i18n="specs.f1.title">Base de connaissances</span>
+          <span class="ital" data-i18n="specs.f1.sub">votre cerveau, partagé.</span>
+        </h3>
+        <p class="spec-desc" data-i18n="specs.f1.desc">
+          Guides par poste, département ou établissement. Recherche instantanée. Vos collaborateurs trouvent la bonne info au bon moment, sans détour ni Drive labyrinthique.
+        </p>
+        <div class="spec-tags">
+          <span class="spec-tag live" data-i18n="specs.f1.t1">Live</span>
+          <span class="spec-tag" data-i18n="specs.f1.t2">Recherche</span>
+          <span class="spec-tag" data-i18n="specs.f1.t3">Multi-format</span>
+        </div>
+      </article>
+
+      <article class="spec-row" data-reveal>
+        <span class="spec-id">F · 02</span>
+        <h3 class="spec-name">
+          <span data-i18n="specs.f2.title">Parcours d'apprentissage</span>
+          <span class="ital" data-i18n="specs.f2.sub">la pédagogie, séquencée.</span>
+        </h3>
+        <p class="spec-desc" data-i18n="specs.f2.desc">
+          Modules progressifs, certifiants, conditionnés. Chaque étape valide la suivante, et personne ne saute une marche — y compris vos seniors.
+        </p>
+        <div class="spec-tags">
+          <span class="spec-tag live" data-i18n="specs.f2.t1">Live</span>
+          <span class="spec-tag" data-i18n="specs.f2.t2">Quizz</span>
+          <span class="spec-tag" data-i18n="specs.f2.t3">Certifiant</span>
+        </div>
+      </article>
+
+      <article class="spec-row" data-reveal>
+        <span class="spec-id">F · 03</span>
+        <h3 class="spec-name">
+          <span data-i18n="specs.f3.title">Feuille de contrôle</span>
+          <span class="ital" data-i18n="specs.f3.sub">la qualité, mesurable.</span>
+        </h3>
+        <p class="spec-desc" data-i18n="specs.f3.desc">
+          Audits notés 1 à 5 étoiles, photos à l'appui, rapports PDF générés en un clic. La qualité devient un standard pilotable, pas une intuition.
+        </p>
+        <div class="spec-tags">
+          <span class="spec-tag live" data-i18n="specs.f3.t1">Live</span>
+          <span class="spec-tag" data-i18n="specs.f3.t2">Photos</span>
+          <span class="spec-tag" data-i18n="specs.f3.t3">PDF</span>
+        </div>
+      </article>
+
+      <article class="spec-row" data-reveal>
+        <span class="spec-id">F · 04</span>
+        <h3 class="spec-name">
+          <span data-i18n="specs.f4.title">Entretiens & objectifs</span>
+          <span class="ital" data-i18n="specs.f4.sub">le suivi humain, sans flou.</span>
+        </h3>
+        <p class="spec-desc" data-i18n="specs.f4.desc">
+          Suivi individuel basé sur des critères factuels. Planification simple. Historique conservé. Plus aucun entretien improvisé entre deux coups de feu.
+        </p>
+        <div class="spec-tags">
+          <span class="spec-tag" data-i18n="specs.f4.t1">Q3 2026</span>
+          <span class="spec-tag" data-i18n="specs.f4.t2">Historique</span>
+          <span class="spec-tag" data-i18n="specs.f4.t3">Objectifs</span>
+        </div>
+      </article>
+
+      <article class="spec-row" data-reveal>
+        <span class="spec-id">F · 05</span>
+        <h3 class="spec-name">
+          <span data-i18n="specs.f5.title">Rapports managériaux</span>
+          <span class="ital" data-i18n="specs.f5.sub">la vue d'ensemble, instantanée.</span>
+        </h3>
+        <p class="spec-desc" data-i18n="specs.f5.desc">
+          Tableaux de bord multi-sites, indicateurs clés, comparaisons. Vous pilotez vos restaurants comme une équipe — pas comme une collection d'objets disparates.
+        </p>
+        <div class="spec-tags">
+          <span class="spec-tag live" data-i18n="specs.f5.t1">Live</span>
+          <span class="spec-tag" data-i18n="specs.f5.t2">Multi-sites</span>
+          <span class="spec-tag" data-i18n="specs.f5.t3">Export</span>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- EARLY -->
+<section class="early" id="early">
+  <div class="container early-inner">
+    <div data-reveal>
+      <span class="eyebrow"><span data-i18n="early.eyebrow">Bêta privée · accès limité</span></span>
+    </div>
+    <h2 class="early-title" data-reveal data-reveal-delay="1" data-i18n="early.title">REJOIGNEZ LA BÊTA.</h2>
+    <div class="early-script" data-reveal data-reveal-delay="2" data-i18n="early.script">(avant que vos concurrents ne s'en chargent.)</div>
+    <p class="early-sub" data-reveal data-reveal-delay="3" data-i18n="early.sub">
+      Vingt restaurateurs sélectionnés à la main. Une plateforme façonnée avec vous. Un accès vie-entière au tarif fondateur.
+    </p>
+    <form class="early-form" id="earlyForm" data-reveal data-reveal-delay="4" novalidate>
+      <input type="text" name="firstname" required placeholder="Prénom" aria-label="Prénom" data-i18n-placeholder="early.firstname" />
+      <input type="email" name="email" required placeholder="email@restaurant.fr" aria-label="Email" data-i18n-placeholder="early.email" />
+      <button type="submit"><span data-i18n="early.submit">Je veux accéder</span>&nbsp;→</button>
+    </form>
+    <p class="early-note" data-reveal data-reveal-delay="5" data-i18n="early.note">
+      Aucune carte bancaire · Aucun engagement
+    </p>
+    <div class="early-success" id="earlySuccess" role="status" aria-live="polite">
+      <h3 data-i18n="early.successTitle">Merci !</h3>
+      <p data-i18n="early.successText">On vous recontacte très bientôt avec votre accès bêta. Surveillez votre boîte mail.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq" id="faq">
+  <div class="container">
+    <div class="faq-head">
+      <div data-reveal>
+        <span class="eyebrow"><span data-i18n="faq.eyebrow">Entretien</span></span>
+        <h2 class="display" style="margin-top:24px" data-i18n="faq.title">Vos questions. Nos réponses.</h2>
+      </div>
+      <p class="lede" data-reveal data-reveal-delay="1" data-i18n="faq.lede">
+        Si votre question n'est pas listée, écrivez-nous — on répond personnellement, sans bot, en moins de 24 h.
+      </p>
+    </div>
+
+    <ol class="faq-list">
+      <li class="faq-item" data-reveal>
+        <span class="faq-num">№ 01</span>
+        <div class="faq-q" data-i18n="faq.q1">Qu'est-ce que Tsuno, concrètement ?</div>
+        <div class="faq-a" data-i18n="faq.a1">Une plateforme SaaS conçue pour la restauration : formation, onboarding, suivi des équipes et pilotage qualité, le tout dans un seul outil — pas cinq abonnements à empiler.</div>
+      </li>
+      <li class="faq-item" data-reveal data-reveal-delay="1">
+        <span class="faq-num">№ 02</span>
+        <div class="faq-q" data-i18n="faq.q2">Pour quel type de restauration ?</div>
+        <div class="faq-a" data-i18n="faq.a2">Multi-sites, franchises, groupes, restauration rapide haut de gamme, restauration collective. Tsuno s'adapte à votre organisation — pas l'inverse.</div>
+      </li>
+      <li class="faq-item" data-reveal data-reveal-delay="2">
+        <span class="faq-num">№ 03</span>
+        <div class="faq-q" data-i18n="faq.q3">Combien de temps pour démarrer ?</div>
+        <div class="faq-a" data-i18n="faq.a3">Une première version fonctionnelle en moins d'une semaine. Le déploiement complet dépend de votre volume de contenus — on vous accompagne à chaque étape.</div>
+      </li>
+      <li class="faq-item" data-reveal data-reveal-delay="3">
+        <span class="faq-num">№ 04</span>
+        <div class="faq-q" data-i18n="faq.q4">Est-ce vraiment utilisable sur le terrain ?</div>
+        <div class="faq-a" data-i18n="faq.a4">Tsuno est mobile-first. Smartphone en cuisine, tablette en salle, ordinateur au bureau — chaque interface est pensée pour son contexte d'usage.</div>
+      </li>
+      <li class="faq-item" data-reveal data-reveal-delay="4">
+        <span class="faq-num">№ 05</span>
+        <div class="faq-q" data-i18n="faq.q5">Mes données sont-elles sécurisées ?</div>
+        <div class="faq-a" data-i18n="faq.a5">Hébergement européen, chiffrement en transit et au repos, conformité RGPD complète. Vos données restent les vôtres — toujours exportables, jamais revendues.</div>
+      </li>
+      <li class="faq-item" data-reveal data-reveal-delay="5">
+        <span class="faq-num">№ 06</span>
+        <div class="faq-q" data-i18n="faq.q6">Puis-je personnaliser entièrement ?</div>
+        <div class="faq-a" data-i18n="faq.a6">Vos contenus, vos process, vos critères d'évaluation, votre identité visuelle. Tsuno est l'outil — votre savoir-faire reste, et restera, le vôtre.</div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container-wide">
+    <div class="footer-mega" aria-hidden="true">TSUNO</div>
+    <div class="footer-inner">
+      <a href="#top" class="footer-logo" aria-label="Tsuno">
+        <img src="/assets/tsuno-logo-white.png" alt="Tsuno" />
+      </a>
+      <p class="footer-tagline" data-i18n="footer.tagline">l'excellence, transmissible.</p>
+      <ul class="footer-social">
+        <li><a href="#" aria-label="Facebook">
+          <svg viewBox="0 0 24 24"><path d="M13.4 21.5v-8.6h2.9l.4-3.4h-3.3V7.4c0-1 .3-1.6 1.7-1.6h1.8V2.7c-.3-.1-1.4-.2-2.7-.2-2.6 0-4.4 1.6-4.4 4.5v2.5H7v3.4h2.8v8.6h3.6z"/></svg>
+        </a></li>
+        <li><a href="#" aria-label="Instagram">
+          <svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.8.1 1.2.1 1.8.2 2.2.4.6.2 1 .5 1.4.9.4.4.7.9.9 1.4.2.4.4 1.1.4 2.2.1 1.3.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 1.2-.2 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.9.7-1.4.9-.4.2-1.1.4-2.2.4-1.3.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-1.2-.1-1.8-.2-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.9-.9-1.4-.2-.4-.4-1.1-.4-2.2-.1-1.3-.1-1.6-.1-4.8s0-3.6.1-4.8c.1-1.2.2-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.9-.7 1.4-.9.4-.2 1.1-.4 2.2-.4 1.2-.1 1.6-.1 4.8-.1zm0 2.2c-3.1 0-3.5 0-4.7.1-1.1.1-1.7.2-2.1.4-.5.2-.9.4-1.3.8-.4.4-.6.8-.8 1.3-.2.4-.3 1-.4 2.1 0 1.2-.1 1.6-.1 4.7s0 3.5.1 4.7c.1 1.1.2 1.7.4 2.1.2.5.4.9.8 1.3.4.4.8.6 1.3.8.4.2 1 .3 2.1.4 1.2.1 1.6.1 4.7.1s3.5 0 4.7-.1c1.1-.1 1.7-.2 2.1-.4.5-.2.9-.4 1.3-.8.4-.4.6-.8.8-1.3.2-.4.3-1 .4-2.1.1-1.2.1-1.6.1-4.7s0-3.5-.1-4.7c-.1-1.1-.2-1.7-.4-2.1-.2-.5-.4-.9-.8-1.3-.4-.4-.8-.6-1.3-.8-.4-.2-1-.3-2.1-.4-1.2-.1-1.6-.1-4.7-.1zm0 3.7a4 4 0 1 1 0 8 4 4 0 0 1 0-8zm0 6.6a2.6 2.6 0 1 0 0-5.2 2.6 2.6 0 0 0 0 5.2zm5.1-6.7a.9.9 0 1 1-1.9 0 .9.9 0 0 1 1.9 0z"/></svg>
+        </a></li>
+        <li><a href="#" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24"><path d="M6.9 8.3a1.8 1.8 0 1 1 0-3.6 1.8 1.8 0 0 1 0 3.6zM8.5 19.5H5.3V9.7h3.2v9.8zm11 0h-3.2v-4.8c0-1.1 0-2.6-1.6-2.6s-1.8 1.2-1.8 2.5v4.9h-3.2V9.7H13v1.3h.1c.4-.8 1.4-1.6 2.9-1.6 3.1 0 3.6 2 3.6 4.7v5.4z"/></svg>
+        </a></li>
+      </ul>
+      <div class="footer-meta">
+        <a href="/mentions-legales.html" data-i18n="footer.legal">Mentions légales</a>
+        <a href="/politique-de-confidentialite.html" data-i18n="footer.privacy">Confidentialité</a>
+        <span class="copyright">© 2026 Tsuno — <span data-i18n="footer.copyright">créé par</span> <a href="https://yumea.fr" target="_blank" rel="noopener" class="yumea-link">Yumea</a></span>
+        <span data-i18n="footer.address">3 rue Passet, 69007 Lyon</span>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   i18n
+============================================================ */
+const translations = {
+  fr: {
+    "nav.about":"Manifeste","nav.advantages":"Méthode","nav.benefits":"Bénéfices","nav.features":"Fonctions","nav.faq":"FAQ","nav.cta":"Rejoindre la bêta",
+
+    "hero.top1":"Tsuno · Plateforme · Restauration",
+    "hero.top2":"Bêta privée · Été 2026",
+    "hero.line1":"FORMEZ.","hero.line2":"SUIVEZ.","hero.line3":"PILOTEZ",
+    "hero.script":"(toute votre brigade, depuis un seul outil.)",
+    "hero.desc":"Tsuno centralise vos process, vos formations et le suivi de vos équipes. Du premier jour de votre nouveau commis jusqu'à l'évaluation annuelle de votre chef de salle — tout vit au même endroit.",
+    "hero.cta1":"Rejoindre la bêta","hero.cta2":"Lire le manifeste",
+    "hero.foot1":"modules natifs","hero.foot2":"rôles paramétrables","hero.foot3":"plateforme unique",
+    "hero.foot4":"Conçu à Lyon · Hébergé en Europe",
+
+    "man.label":"Le manifeste",
+    "man.body1":"suno est né d'une obsession très simple : ",
+    "man.body2":"transmettre un savoir-faire ne devrait jamais être un goulot d'étranglement.",
+    "man.body3":" Dans la restauration, on forme dans le bruit, dans la précipitation, entre deux services. On répète vingt fois la même chose à vingt personnes différentes. Et trois mois plus tard, ",
+    "man.body4":"la moitié de ce qu'on a appris s'est dilué.",
+    "man.body5":" Tsuno arrête cette hémorragie. Vos process deviennent un produit. Vos équipes deviennent une école. Et l'excellence, enfin, devient industrielle.",
+    "man.note1":"Issu du terrain — Kajirō Sushi, Lyon.",
+    "man.note2":"Universalisé pour toute enseigne, taille ou cuisine.",
+    "man.note3":"Pensé d'abord pour les managers de terrain.",
+    "man.sig":"— l'équipe Tsuno.",
+
+    "toc.eyebrow":"La méthode",
+    "toc.title":"Quatre principes. Zéro compromis.",
+    "toc.lede":"Tsuno ne réinvente pas la formation. Il la rend transmissible, mesurable, et reproductible — à grande échelle.",
+    "toc.p1.title":"Centralisation",
+    "toc.p1.desc":"Une source unique pour tous vos process, accessible partout, mise à jour en temps réel. Plus de Drive éclaté, plus de WhatsApp qui s'efface.",
+    "toc.p2.title":"Hiérarchie",
+    "toc.p2.desc":"Chaque rôle voit ce qui le concerne — du commis au directeur d'exploitation. Les bons accès au bon moment, sans usine à gaz.",
+    "toc.p3.title":"Progression",
+    "toc.p3.desc":"Des parcours séquencés, qui s'adaptent au poste, au site, au niveau et au rythme de chaque apprenant. Personne ne saute une marche.",
+    "toc.p4.title":"Mesure",
+    "toc.p4.desc":"Avancement, évaluations, objectifs : tout est visible, mesurable, factuel. Vous arrêtez de piloter à l'instinct.",
+
+    "bento.eyebrow":"Ce qui change",
+    "bento.title":"Le quotidien <span class='ink'>de vos managers</span>, repensé.",
+    "bento.lede":"Moins de temps perdu, plus de cohérence, des équipes formées au même standard d'exigence — sur tous vos sites.",
+    "bento.b1.title":"Un nouveau, opérationnel en quelques jours.","bento.b1.acc":"plus vite",
+    "bento.b2.title":"Chaque parcours s'adapte.",
+    "bento.b2.desc":"Au poste, au site, au niveau. Au lieu d'un seul programme générique pour tout le monde.",
+    "bento.b3.title":"Base centralisée",
+    "bento.b3.desc":"Recettes, fiches techniques, procédures. Toujours à jour.",
+    "bento.b4.quote":"Mes managers passaient leur dimanche à faire des plannings de formation. Maintenant ils passent leur dimanche en famille.",
+    "bento.b4.cite":"— Directeur d'exploitation, 14 sites",
+    "bento.b5.title":"Vous voyez qui progresse. Et qui décroche.",
+    "bento.b6.title":"Le même standard, partout.","bento.b6.script":"enfin.",
+
+    "specs.eyebrow":"Fonctions natives",
+    "specs.title":"Tout ce dont vos managers ont besoin.",
+    "specs.lede":"Cinq modules natifs, conçus pour fonctionner ensemble. Pas d'intégrations bricolées, pas de modules vendus séparément.",
+    "specs.f1.title":"Base de connaissances","specs.f1.sub":"votre cerveau, partagé.",
+    "specs.f1.desc":"Guides par poste, département ou établissement. Recherche instantanée. Vos collaborateurs trouvent la bonne info au bon moment, sans détour ni Drive labyrinthique.",
+    "specs.f1.t1":"Live","specs.f1.t2":"Recherche","specs.f1.t3":"Multi-format",
+    "specs.f2.title":"Parcours d'apprentissage","specs.f2.sub":"la pédagogie, séquencée.",
+    "specs.f2.desc":"Modules progressifs, certifiants, conditionnés. Chaque étape valide la suivante, et personne ne saute une marche — y compris vos seniors.",
+    "specs.f2.t1":"Live","specs.f2.t2":"Quizz","specs.f2.t3":"Certifiant",
+    "specs.f3.title":"Feuille de contrôle","specs.f3.sub":"la qualité, mesurable.",
+    "specs.f3.desc":"Audits notés 1 à 5 étoiles, photos à l'appui, rapports PDF générés en un clic. La qualité devient un standard pilotable, pas une intuition.",
+    "specs.f3.t1":"Live","specs.f3.t2":"Photos","specs.f3.t3":"PDF",
+    "specs.f4.title":"Entretiens & objectifs","specs.f4.sub":"le suivi humain, sans flou.",
+    "specs.f4.desc":"Suivi individuel basé sur des critères factuels. Planification simple. Historique conservé. Plus aucun entretien improvisé entre deux coups de feu.",
+    "specs.f4.t1":"Q3 2026","specs.f4.t2":"Historique","specs.f4.t3":"Objectifs",
+    "specs.f5.title":"Rapports managériaux","specs.f5.sub":"la vue d'ensemble, instantanée.",
+    "specs.f5.desc":"Tableaux de bord multi-sites, indicateurs clés, comparaisons. Vous pilotez vos restaurants comme une équipe — pas comme une collection d'objets disparates.",
+    "specs.f5.t1":"Live","specs.f5.t2":"Multi-sites","specs.f5.t3":"Export",
+
+    "early.eyebrow":"Bêta privée · accès limité",
+    "early.title":"REJOIGNEZ LA BÊTA.",
+    "early.script":"(avant que vos concurrents ne s'en chargent.)",
+    "early.sub":"Vingt restaurateurs sélectionnés à la main. Une plateforme façonnée avec vous. Un accès vie-entière au tarif fondateur.",
+    "early.firstname":"Prénom","early.email":"email@restaurant.fr",
+    "early.submit":"Je veux accéder",
+    "early.note":"Aucune carte bancaire · Aucun engagement",
+    "early.successTitle":"Merci !",
+    "early.successText":"On vous recontacte très bientôt avec votre accès bêta. Surveillez votre boîte mail.",
+
+    "faq.eyebrow":"Entretien","faq.title":"Vos questions. Nos réponses.",
+    "faq.lede":"Si votre question n'est pas listée, écrivez-nous — on répond personnellement, sans bot, en moins de 24 h.",
+    "faq.q1":"Qu'est-ce que Tsuno, concrètement ?",
+    "faq.a1":"Une plateforme SaaS conçue pour la restauration : formation, onboarding, suivi des équipes et pilotage qualité, le tout dans un seul outil — pas cinq abonnements à empiler.",
+    "faq.q2":"Pour quel type de restauration ?",
+    "faq.a2":"Multi-sites, franchises, groupes, restauration rapide haut de gamme, restauration collective. Tsuno s'adapte à votre organisation — pas l'inverse.",
+    "faq.q3":"Combien de temps pour démarrer ?",
+    "faq.a3":"Une première version fonctionnelle en moins d'une semaine. Le déploiement complet dépend de votre volume de contenus — on vous accompagne à chaque étape.",
+    "faq.q4":"Est-ce vraiment utilisable sur le terrain ?",
+    "faq.a4":"Tsuno est mobile-first. Smartphone en cuisine, tablette en salle, ordinateur au bureau — chaque interface est pensée pour son contexte d'usage.",
+    "faq.q5":"Mes données sont-elles sécurisées ?",
+    "faq.a5":"Hébergement européen, chiffrement en transit et au repos, conformité RGPD complète. Vos données restent les vôtres — toujours exportables, jamais revendues.",
+    "faq.q6":"Puis-je personnaliser entièrement ?",
+    "faq.a6":"Vos contenus, vos process, vos critères d'évaluation, votre identité visuelle. Tsuno est l'outil — votre savoir-faire reste, et restera, le vôtre.",
+
+    "footer.tagline":"l'excellence, transmissible.",
+    "footer.legal":"Mentions légales",
+    "footer.privacy":"Confidentialité",
+    "footer.copyright":"créé par",
+    "footer.address":"3 rue Passet, 69007 Lyon"
+  },
+  en: {
+    "nav.about":"Manifesto","nav.advantages":"Method","nav.benefits":"Benefits","nav.features":"Features","nav.faq":"FAQ","nav.cta":"Join the beta",
+
+    "hero.top1":"Tsuno · Platform · Hospitality",
+    "hero.top2":"Private beta · Summer 2026",
+    "hero.line1":"TRAIN.","hero.line2":"TRACK.","hero.line3":"LEAD",
+    "hero.script":"(your whole brigade, from a single tool.)",
+    "hero.desc":"Tsuno brings your processes, your training and your team tracking together. From your new line cook's first day to your head waiter's annual review — everything lives in one place.",
+    "hero.cta1":"Join the beta","hero.cta2":"Read the manifesto",
+    "hero.foot1":"native modules","hero.foot2":"configurable roles","hero.foot3":"single platform",
+    "hero.foot4":"Built in Lyon · Hosted in the EU",
+
+    "man.label":"The manifesto",
+    "man.body1":"suno was born from a stubborn obsession: ",
+    "man.body2":"passing on craft should never be a bottleneck.",
+    "man.body3":" In hospitality, we train in the noise, in the rush, between two services. We repeat the same thing twenty times to twenty different people. And three months later, ",
+    "man.body4":"half of what's been taught has already evaporated.",
+    "man.body5":" Tsuno stops the bleeding. Your processes become a product. Your teams become a school. And excellence, finally, becomes industrial.",
+    "man.note1":"Rooted in the field — Kajirō Sushi, Lyon.",
+    "man.note2":"Generalized for any brand, scale or cuisine.",
+    "man.note3":"Built first for floor-level managers.",
+    "man.sig":"— the Tsuno team.",
+
+    "toc.eyebrow":"The method","toc.title":"Four principles. Zero compromises.",
+    "toc.lede":"Tsuno doesn't reinvent training. It makes it transmissible, measurable, reproducible — at scale.",
+    "toc.p1.title":"Centralization",
+    "toc.p1.desc":"A single source for every process, accessible anywhere, updated live. No more scattered Drives, no more WhatsApp threads disappearing.",
+    "toc.p2.title":"Hierarchy",
+    "toc.p2.desc":"Each role sees what matters — from line cook to operations director. The right access at the right moment, with no overhead.",
+    "toc.p3.title":"Progression",
+    "toc.p3.desc":"Sequenced paths that adapt to the role, the site, the level and the pace of each learner. No one skips a step.",
+    "toc.p4.title":"Measurement",
+    "toc.p4.desc":"Progress, evaluations, goals: all visible, measurable, factual. You stop steering on instinct.",
+
+    "bento.eyebrow":"What changes",
+    "bento.title":"Your managers' day, <span class='ink'>rethought</span>.",
+    "bento.lede":"Less wasted time, more consistency, teams trained to the same bar of excellence — across every site.",
+    "bento.b1.title":"A new hire, operational in days.","bento.b1.acc":"faster",
+    "bento.b2.title":"Every path adapts.",
+    "bento.b2.desc":"To the role, the site, the level. Instead of one generic program for everyone.",
+    "bento.b3.title":"Central base","bento.b3.desc":"Recipes, specs, procedures. Always up to date.",
+    "bento.b4.quote":"My managers used to spend Sundays building training schedules. Now they spend Sundays with their families.",
+    "bento.b4.cite":"— Operations director, 14 sites",
+    "bento.b5.title":"You see who progresses. And who lags.",
+    "bento.b6.title":"The same bar, everywhere.","bento.b6.script":"at last.",
+
+    "specs.eyebrow":"Native features","specs.title":"Everything your managers need.",
+    "specs.lede":"Five native modules, designed to work together. No duct-taped integrations, no modules sold separately.",
+    "specs.f1.title":"Knowledge base","specs.f1.sub":"your brain, shared.",
+    "specs.f1.desc":"Guides by role, department or location. Instant search. Your teams find the right answer at the right moment — no detours, no maze of folders.",
+    "specs.f1.t1":"Live","specs.f1.t2":"Search","specs.f1.t3":"Multi-format",
+    "specs.f2.title":"Learning paths","specs.f2.sub":"pedagogy, sequenced.",
+    "specs.f2.desc":"Progressive, certifying, gated modules. Each step unlocks the next — and no one skips a level, your seniors included.",
+    "specs.f2.t1":"Live","specs.f2.t2":"Quizzes","specs.f2.t3":"Certifying",
+    "specs.f3.title":"Control sheets","specs.f3.sub":"quality, measurable.",
+    "specs.f3.desc":"Audits rated 1 to 5 stars, photo evidence, one-click PDF reports. Quality becomes a steerable standard — not an intuition.",
+    "specs.f3.t1":"Live","specs.f3.t2":"Photos","specs.f3.t3":"PDF",
+    "specs.f4.title":"Reviews & goals","specs.f4.sub":"human follow-up, without fog.",
+    "specs.f4.desc":"Individual tracking on factual criteria. Simple scheduling. Preserved history. No more improvised reviews between two services.",
+    "specs.f4.t1":"Q3 2026","specs.f4.t2":"History","specs.f4.t3":"Goals",
+    "specs.f5.title":"Management reports","specs.f5.sub":"the bird's eye view, instant.",
+    "specs.f5.desc":"Multi-site dashboards, key indicators, comparisons. You run your restaurants as a team — not a collection of disparate objects.",
+    "specs.f5.t1":"Live","specs.f5.t2":"Multi-site","specs.f5.t3":"Export",
+
+    "early.eyebrow":"Private beta · limited access","early.title":"JOIN THE BETA.",
+    "early.script":"(before your competitors do.)",
+    "early.sub":"Twenty restaurateurs hand-picked. A platform shaped with you. Lifetime access at founder pricing.",
+    "early.firstname":"First name","early.email":"email@restaurant.com",
+    "early.submit":"Request access",
+    "early.note":"No credit card · No commitment",
+    "early.successTitle":"Thank you!",
+    "early.successText":"We'll be in touch shortly with your beta access. Keep an eye on your inbox.",
+
+    "faq.eyebrow":"Interview","faq.title":"Your questions. Our answers.",
+    "faq.lede":"If your question isn't here, write to us — we reply personally, no bots, in under 24 hours.",
+    "faq.q1":"What is Tsuno, concretely?",
+    "faq.a1":"A SaaS platform built for hospitality: training, onboarding, team tracking and quality steering, all in one tool — not five subscriptions piled on top of each other.",
+    "faq.q2":"For what kind of restaurants?",
+    "faq.a2":"Multi-site groups, franchises, premium fast-casual, institutional catering. Tsuno adapts to your organization — not the other way around.",
+    "faq.q3":"How long to get started?",
+    "faq.a3":"A working first version in less than a week. Full deployment depends on your content volume — we walk with you at every step.",
+    "faq.q4":"Is it really field-friendly?",
+    "faq.a4":"Tsuno is mobile-first. Phone in the kitchen, tablet in the dining room, computer in the office — each interface is built for its usage context.",
+    "faq.q5":"Is my data secure?",
+    "faq.a5":"European hosting, encryption in transit and at rest, full GDPR compliance. Your data stays yours — always exportable, never sold.",
+    "faq.q6":"Can I customize everything?",
+    "faq.a6":"Your content, your processes, your evaluation criteria, your visual identity. Tsuno is the tool — your craft stays, and will stay, yours.",
+
+    "footer.tagline":"excellence, made transmissible.",
+    "footer.legal":"Legal notice",
+    "footer.privacy":"Privacy",
+    "footer.copyright":"built by",
+    "footer.address":"3 rue Passet, 69007 Lyon"
+  }
+};
+
+let currentLang = "fr";
+
+function setLang(lang){
+  if(!translations[lang]) return;
+  currentLang = lang;
+  document.documentElement.lang = lang;
+
+  document.querySelectorAll("[data-i18n]").forEach(el=>{
+    const key = el.getAttribute("data-i18n");
+    const val = translations[lang][key];
+    if(typeof val === "string"){
+      if(val.includes("<span")){
+        el.innerHTML = val;
+      }else{
+        el.textContent = val;
+      }
+    }
+  });
+
+  document.querySelectorAll("[data-i18n-placeholder]").forEach(el=>{
+    const key = el.getAttribute("data-i18n-placeholder");
+    const val = translations[lang][key];
+    if(typeof val === "string") el.setAttribute("placeholder",val);
+  });
+
+  document.querySelectorAll(".lang-switcher button").forEach(btn=>{
+    const isActive = btn.dataset.lang === lang;
+    btn.classList.toggle("active", isActive);
+    btn.setAttribute("aria-pressed", isActive ? "true" : "false");
+  });
+}
+
+document.querySelectorAll(".lang-switcher button").forEach(btn=>{
+  btn.addEventListener("click",()=>setLang(btn.dataset.lang));
+});
+
+/* NAV + PROGRESS */
+const nav = document.getElementById("nav");
+function onScroll(){
+  const y = window.scrollY;
+  nav.classList.toggle("scrolled", y > 16);
+  const docH = document.documentElement.scrollHeight - window.innerHeight;
+  const pct = docH > 0 ? (y / docH) * 100 : 0;
+  document.getElementById("scrollProgress").style.width = pct + "%";
+}
+window.addEventListener("scroll", onScroll, {passive:true});
+onScroll();
+
+/* MOBILE NAV */
+const navToggle = document.querySelector(".nav-toggle");
+navToggle?.addEventListener("click",()=>{
+  const open = nav.classList.toggle("menu-open");
+  nav.classList.toggle("nav-open", open);
+  navToggle.setAttribute("aria-expanded", open ? "true" : "false");
+  navToggle.setAttribute("aria-label", open ? "Fermer le menu" : "Ouvrir le menu");
+});
+document.querySelectorAll(".nav-links a").forEach(a=>{
+  a.addEventListener("click",()=>{
+    nav.classList.remove("menu-open","nav-open");
+    navToggle?.setAttribute("aria-expanded","false");
+  });
+});
+
+/* SCROLL REVEAL */
+const reveals = document.querySelectorAll("[data-reveal]");
+if("IntersectionObserver" in window){
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add("is-visible");
+        io.unobserve(entry.target);
+      }
+    });
+  },{threshold:0.1, rootMargin:"0px 0px -6% 0px"});
+  reveals.forEach(el=>io.observe(el));
+}else{
+  reveals.forEach(el=>el.classList.add("is-visible"));
+}
+
+/* ============================================================
+   EARLY FORM — branché sur Tally (popup pré-remplie)
+   → Remplace TALLY_FORM_ID par l'ID de ton formulaire Tally
+     (visible dans l'URL : tally.so/r/XXXXXX → XXXXXX)
+============================================================ */
+const TALLY_FORM_ID = "0Q1YOQ";
+
+const form = document.getElementById("earlyForm");
+form?.addEventListener("submit",(e)=>{
+  e.preventDefault();
+  const data = new FormData(form);
+  const firstname = (data.get("firstname")||"").toString().trim();
+  const email = (data.get("email")||"").toString().trim();
+  if(!firstname || !email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+    form.animate(
+      [{transform:"translateX(0)"},{transform:"translateX(-8px)"},{transform:"translateX(8px)"},{transform:"translateX(0)"}],
+      {duration:300}
+    );
+    return;
+  }
+
+  const showSuccess = ()=>document.getElementById("early").classList.add("is-submitted");
+
+  if(typeof Tally !== "undefined" && TALLY_FORM_ID && TALLY_FORM_ID !== "TALLY_FORM_ID"){
+    Tally.openPopup(TALLY_FORM_ID,{
+      hideTitle:true,
+      autoClose:1500,
+      hiddenFields:{firstname:firstname,email:email},
+      onSubmit:showSuccess,
+      onClose:showSuccess
+    });
+  }else{
+    // Fallback : pas de Tally configuré, on affiche quand même le merci
+    showSuccess();
+  }
+});
+
+setLang("fr");
+
+/* ============================================================
+   COOKIE BANNER
+============================================================ */
+(function(){
+  var COOKIE_KEY = 'tsuno_cookie_ok';
+  var banner = document.getElementById('cookieBanner');
+  var btn    = document.getElementById('cookieClose');
+  if(!banner) return;
+  // Si déjà fermé, on cache directement
+  if(localStorage.getItem(COOKIE_KEY)){
+    banner.classList.add('hidden');
+    return;
+  }
+  // Sinon on affiche après 1.2s
+  setTimeout(function(){
+    banner.classList.remove('hidden');
+  }, 1200);
+  btn.addEventListener('click', function(){
+    banner.classList.add('hidden');
+    try{ localStorage.setItem(COOKIE_KEY,'1'); } catch(e){}
+  });
+})();
+</script>
+
+</body>
+</html>
