@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Pour qui — Tsuno</title>
+<meta name="description" content="Tsuno s'adapte à votre configuration : indépendant, franchise ou groupe. Découvrez le plan qui correspond à votre réalité terrain."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:wght@400;500;600&family=Caveat:wght@600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --color-bg:#1C1428;
+  --color-parme:#A893C8;
+  --color-parme-light:#D6C8E5;
+  --color-cream:#F2EBE0;
+  --color-ink:#1A1428;
+  --color-cream-dark:#E8DDD0;
+  --ff-display:"Archivo Black",sans-serif;
+  --ff-script:"Caveat",cursive;
+  --ff-serif:"Instrument Serif",serif;
+  --ff-mono:"JetBrains Mono",monospace;
+  --ff-body:"Archivo",sans-serif;
+  --r:16px;
+  --r-lg:24px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;font-size:16px}
+body{background:var(--color-bg);color:var(--color-cream);font-family:var(--ff-body);line-height:1.6;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+
+/* ═══ NAV ═══ */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 2rem;height:64px;display:flex;align-items:center;justify-content:space-between;background:rgba(28,20,40,.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(168,147,200,.12)}
+.nav-logo{font-family:var(--ff-display);font-size:1.2rem;letter-spacing:-.02em;color:var(--color-cream)}
+.nav-logo span{color:var(--color-parme)}
+.nav-links{display:flex;align-items:center;gap:2rem;list-style:none}
+.nav-links a{font-size:.82rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--color-parme-light);opacity:.7;transition:opacity .2s}
+.nav-links a:hover,.nav-links a.active{opacity:1;color:var(--color-cream)}
+.nav-right{display:flex;align-items:center;gap:1rem}
+.lang-btn{background:none;border:1px solid rgba(168,147,200,.3);color:var(--color-parme-light);font-family:var(--ff-mono);font-size:.72rem;letter-spacing:.08em;padding:.3rem .6rem;border-radius:6px;cursor:pointer;transition:all .2s}
+.lang-btn[aria-pressed="true"]{background:var(--color-parme);color:var(--color-ink);border-color:var(--color-parme)}
+.btn-nav{background:var(--color-parme);color:var(--color-ink);font-family:var(--ff-body);font-size:.8rem;font-weight:600;letter-spacing:.04em;padding:.5rem 1.2rem;border-radius:8px;border:none;cursor:pointer;transition:all .2s}
+.btn-nav:hover{background:var(--color-parme-light)}
+.nav-hamburger{display:none;background:none;border:none;cursor:pointer;color:var(--color-cream);font-size:1.4rem}
+@media(max-width:900px){
+  .nav-links{display:none}.nav-hamburger{display:block}
+  .nav-links.open{display:flex;flex-direction:column;position:fixed;top:64px;left:0;right:0;background:var(--color-bg);padding:1.5rem 2rem;gap:1.2rem;border-bottom:1px solid rgba(168,147,200,.12)}
+}
+
+/* ═══ HERO ═══ */
+.page-hero{min-height:52vh;display:flex;flex-direction:column;justify-content:flex-end;padding:calc(64px + 5rem) 2rem 4rem;max-width:1200px;margin:0 auto}
+.breadcrumb{font-family:var(--ff-mono);font-size:.72rem;letter-spacing:.08em;color:var(--color-parme);opacity:.7;margin-bottom:1.5rem;display:flex;align-items:center;gap:.5rem}
+.breadcrumb a:hover{opacity:1}
+.breadcrumb-sep{opacity:.4}
+.page-hero h1{font-family:var(--ff-display);font-size:clamp(2.8rem,6vw,5.5rem);line-height:1;letter-spacing:-.03em;color:var(--color-cream);margin-bottom:1.5rem}
+.page-hero h1 em{font-style:italic;font-family:var(--ff-serif);color:var(--color-parme)}
+.page-hero-sub{font-size:1.1rem;color:var(--color-parme-light);max-width:600px;line-height:1.7;margin-bottom:2.5rem}
+.hero-nav-pills{display:flex;flex-wrap:wrap;gap:.75rem}
+.pill{display:inline-flex;align-items:center;gap:.5rem;padding:.55rem 1.1rem;border-radius:50px;border:1px solid rgba(168,147,200,.25);font-size:.82rem;font-weight:500;cursor:pointer;transition:all .25s;color:var(--color-parme-light)}
+.pill:hover{border-color:var(--color-parme);color:var(--color-cream);background:rgba(168,147,200,.08)}
+.pill.active{background:var(--color-parme);color:var(--color-ink);border-color:var(--color-parme)}
+.pill-dot{width:8px;height:8px;border-radius:50%}
+.pill-dot.ind{background:#7FC47A}
+.pill-dot.fra{background:#F0A04B}
+.pill-dot.grp{background:#6DAEDB}
+
+/* ═══ PROFILE SECTIONS ═══ */
+.profile-section{padding:7rem 2rem;position:relative}
+.profile-section.dark{background:var(--color-bg)}
+.profile-section.cream{background:var(--color-cream);color:var(--color-ink)}
+.profile-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start}
+.profile-inner.reverse{direction:rtl}
+.profile-inner.reverse>*{direction:ltr}
+
+.profile-label{font-family:var(--ff-mono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;margin-bottom:1.2rem;display:flex;align-items:center;gap:.6rem}
+.label-ind{color:#7FC47A}
+.label-fra{color:#F0A04B}
+.label-grp{color:#6DAEDB}
+.label-line{flex:1;height:1px;background:currentColor;opacity:.25;max-width:40px}
+
+.profile-title{font-family:var(--ff-display);font-size:clamp(2rem,4vw,3.2rem);line-height:1.05;letter-spacing:-.03em;margin-bottom:.5rem}
+.profile-title em{font-style:italic;font-family:var(--ff-serif)}
+.profile-size{font-family:var(--ff-mono);font-size:.8rem;letter-spacing:.06em;margin-bottom:1.5rem;opacity:.6}
+.profile-intro{font-size:1rem;line-height:1.75;margin-bottom:2.5rem;opacity:.9}
+
+/* Pain + gain */
+.profile-blocks{display:flex;flex-direction:column;gap:1.5rem}
+.block{padding:1.5rem;border-radius:var(--r);border:1px solid}
+.block.pain{border-color:rgba(255,255,255,.08);background:rgba(255,255,255,.03)}
+.profile-section.cream .block.pain{border-color:rgba(0,0,0,.08);background:rgba(0,0,0,.03)}
+.block.gain{border-color:rgba(168,147,200,.2);background:rgba(168,147,200,.06)}
+.profile-section.cream .block.gain{border-color:rgba(168,147,200,.35);background:rgba(168,147,200,.1)}
+.block-label{font-family:var(--ff-mono);font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;margin-bottom:1rem;display:flex;align-items:center;gap:.5rem}
+.block-label-pain{color:#E07A7A}
+.block-label-gain{color:var(--color-parme)}
+.block-list{list-style:none;display:flex;flex-direction:column;gap:.6rem}
+.block-list li{font-size:.9rem;line-height:1.5;display:flex;align-items:flex-start;gap:.6rem}
+.block-list li::before{content:'';display:block;width:5px;height:5px;border-radius:50%;margin-top:.52em;flex-shrink:0}
+.pain li::before{background:#E07A7A}
+.gain li::before{background:var(--color-parme)}
+.profile-section.cream .gain li::before{background:var(--color-ink)}
+
+/* Right col */
+.profile-right{display:flex;flex-direction:column;gap:2rem}
+.profile-metric-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.metric-card{padding:1.5rem;border-radius:var(--r);background:rgba(168,147,200,.06);border:1px solid rgba(168,147,200,.15);display:flex;flex-direction:column;gap:.4rem}
+.profile-section.cream .metric-card{background:rgba(0,0,0,.03);border-color:rgba(0,0,0,.1)}
+.metric-num{font-family:var(--ff-display);font-size:2.2rem;line-height:1;letter-spacing:-.04em}
+.metric-ind .metric-num{color:#7FC47A}
+.metric-fra .metric-num{color:#F0A04B}
+.metric-grp .metric-num{color:#6DAEDB}
+.metric-label{font-size:.78rem;opacity:.65;line-height:1.4}
+.profile-features{display:flex;flex-direction:column;gap:.75rem}
+.feat-item{display:flex;align-items:flex-start;gap:1rem;padding:1rem 1.2rem;border-radius:12px;border:1px solid rgba(168,147,200,.12);background:rgba(168,147,200,.04);transition:all .25s}
+.profile-section.cream .feat-item{border-color:rgba(0,0,0,.08);background:rgba(0,0,0,.02)}
+.feat-item:hover{border-color:rgba(168,147,200,.28);background:rgba(168,147,200,.08)}
+.feat-icon{font-size:1.2rem;flex-shrink:0;width:2rem;text-align:center}
+.feat-text{display:flex;flex-direction:column;gap:.15rem}
+.feat-name{font-size:.9rem;font-weight:600}
+.feat-desc{font-size:.78rem;opacity:.6;line-height:1.4}
+
+.profile-quote{padding:1.5rem 1.8rem;border-radius:var(--r);border-left:3px solid;font-family:var(--ff-serif);font-size:1.05rem;font-style:italic;line-height:1.7;position:relative}
+.profile-quote.ind{border-color:#7FC47A;background:rgba(127,196,122,.05)}
+.profile-quote.fra{border-color:#F0A04B;background:rgba(240,160,75,.05)}
+.profile-quote.grp{border-color:#6DAEDB;background:rgba(109,174,219,.05)}
+.profile-section.cream .profile-quote{background:rgba(0,0,0,.03)}
+.quote-author{margin-top:.75rem;font-family:var(--ff-body);font-style:normal;font-size:.78rem;opacity:.55;display:flex;align-items:center;gap:.5rem}
+.quote-author::before{content:'—'}
+
+/* ═══ COMPARISON TABLE ═══ */
+.comparison-wrap{padding:7rem 2rem;background:var(--color-cream);color:var(--color-ink)}
+.comparison-inner{max-width:1100px;margin:0 auto}
+.section-eyebrow{font-family:var(--ff-mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--color-parme);margin-bottom:.75rem;display:block}
+.section-title{font-family:var(--ff-display);font-size:clamp(1.8rem,3.5vw,2.8rem);letter-spacing:-.03em;margin-bottom:.75rem;line-height:1.1}
+.section-sub{font-size:1rem;opacity:.7;max-width:520px;line-height:1.65;margin-bottom:3rem}
+.comp-table{width:100%;border-collapse:collapse;font-size:.88rem}
+.comp-table thead th{padding:1rem 1.2rem;font-family:var(--ff-mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;text-align:left;border-bottom:2px solid rgba(0,0,0,.1)}
+.comp-table thead th:first-child{width:35%}
+.comp-table thead .th-ind{color:#7FC47A}
+.comp-table thead .th-fra{color:#F0A04B}
+.comp-table thead .th-grp{color:#6DAEDB}
+.comp-table tbody tr{border-bottom:1px solid rgba(0,0,0,.07)}
+.comp-table tbody tr:last-child{border-bottom:none}
+.comp-table tbody td{padding:1rem 1.2rem;vertical-align:middle}
+.comp-table tbody td:first-child{font-weight:600;font-size:.85rem}
+.comp-table .check{color:#7FC47A;font-size:1rem}
+.comp-table .cross{opacity:.3;font-size:1rem}
+.comp-table .opt{color:#F0A04B;font-size:.75rem;font-family:var(--ff-mono)}
+.comp-table tbody tr:hover{background:rgba(0,0,0,.02)}
+@media(max-width:700px){
+  .comp-table{font-size:.78rem}
+  .comp-table thead th,.comp-table tbody td{padding:.7rem .6rem}
+}
+
+/* ═══ CTA BAND ═══ */
+.cta-band{background:var(--color-parme);padding:6rem 2rem;text-align:center}
+.cta-band-inner{max-width:700px;margin:0 auto}
+.cta-band h2{font-family:var(--ff-display);font-size:clamp(2rem,5vw,3.5rem);letter-spacing:-.03em;color:var(--color-ink);margin-bottom:1rem;line-height:1.05}
+.cta-band h2 em{font-style:italic;font-family:var(--ff-serif)}
+.cta-band p{font-size:1rem;color:rgba(26,20,40,.7);margin-bottom:2rem;line-height:1.6}
+.btn-dark{display:inline-flex;align-items:center;gap:.5rem;background:var(--color-ink);color:var(--color-cream);font-family:var(--ff-body);font-weight:600;font-size:.9rem;letter-spacing:.04em;padding:.85rem 2rem;border-radius:10px;border:none;cursor:pointer;transition:all .25s}
+.btn-dark:hover{background:#2e2545}
+.cta-sub{margin-top:1rem;font-size:.78rem;color:rgba(26,20,40,.5);font-family:var(--ff-mono);letter-spacing:.06em}
+
+/* ═══ FOOTER ═══ */
+footer{background:var(--color-bg);padding:4rem 2rem 2rem;border-top:1px solid rgba(168,147,200,.1)}
+.footer-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;margin-bottom:3rem}
+.footer-brand p{font-size:.85rem;color:var(--color-parme-light);opacity:.6;line-height:1.7;margin-top:.75rem;max-width:240px}
+.footer-col h4{font-family:var(--ff-mono);font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--color-parme);margin-bottom:1rem}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:.6rem}
+.footer-col a{font-size:.82rem;color:var(--color-parme-light);opacity:.6;transition:opacity .2s}
+.footer-col a:hover{opacity:1}
+.footer-bottom{border-top:1px solid rgba(168,147,200,.08);padding-top:2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+.footer-bottom p{font-size:.75rem;color:var(--color-parme-light);opacity:.4;font-family:var(--ff-mono)}
+@media(max-width:900px){
+  .footer-inner{grid-template-columns:1fr 1fr;gap:2rem}
+  .footer-brand{grid-column:1/-1}
+}
+@media(max-width:600px){.footer-inner{grid-template-columns:1fr}}
+
+/* ═══ REVEAL ═══ */
+[data-reveal]{opacity:0;transform:translateY(28px);transition:opacity .6s ease,transform .6s ease}
+[data-reveal].visible{opacity:1;transform:none}
+[data-reveal-delay="1"]{transition-delay:.1s}
+[data-reveal-delay="2"]{transition-delay:.2s}
+[data-reveal-delay="3"]{transition-delay:.3s}
+[data-reveal-delay="4"]{transition-delay:.4s}
+[data-reveal-delay="5"]{transition-delay:.5s}
+
+/* ═══ COOKIE BANNER ═══ */
+#cookie-banner{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);width:calc(100% - 3rem);max-width:560px;background:rgba(28,20,40,.97);border:1px solid rgba(168,147,200,.2);border-radius:var(--r);padding:1.2rem 1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;z-index:200;backdrop-filter:blur(10px);box-shadow:0 8px 40px rgba(0,0,0,.4)}
+#cookie-banner p{font-size:.78rem;color:var(--color-parme-light);opacity:.8;line-height:1.5}
+#cookie-banner a{color:var(--color-parme);text-decoration:underline}
+#cookie-ok{background:var(--color-parme);color:var(--color-ink);border:none;border-radius:8px;padding:.5rem 1.1rem;font-size:.78rem;font-weight:600;cursor:pointer;white-space:nowrap;transition:background .2s}
+#cookie-ok:hover{background:var(--color-parme-light)}
+@media(max-width:600px){
+  #cookie-banner{flex-direction:column;text-align:center}
+  .profile-inner{grid-template-columns:1fr;gap:2.5rem}
+  .profile-inner.reverse{direction:ltr}
+  .profile-metric-row{grid-template-columns:1fr 1fr}
+  .page-hero{padding:calc(64px + 3rem) 1.5rem 2.5rem}
+  .hero-nav-pills{gap:.5rem}
+  .comparison-wrap,.cta-band,.profile-section{padding:4rem 1.5rem}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-logo">tsuno<span>.</span></a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="/" data-i18n="nav_home">Accueil</a></li>
+    <li><a href="/solution.html" data-i18n="nav_solution">Solution</a></li>
+    <li><a href="/pour-qui.html" class="active" data-i18n="nav_pourqui">Pour qui</a></li>
+    <li><a href="/#manifesto" data-i18n="nav_manifesto">Manifeste</a></li>
+    <li><a href="/#faq" data-i18n="nav_faq">FAQ</a></li>
+  </ul>
+  <div class="nav-right">
+    <button class="lang-btn" id="btnFr" aria-pressed="true" onclick="setLang('fr')">FR</button>
+    <button class="lang-btn" id="btnEn" aria-pressed="false" onclick="setLang('en')">EN</button>
+    <button class="btn-nav" onclick="openTally()" data-i18n="nav_cta">Démo gratuite</button>
+  </div>
+  <button class="nav-hamburger" onclick="document.getElementById('navLinks').classList.toggle('open')">☰</button>
+</nav>
+
+<!-- HERO -->
+<section class="page-hero">
+  <p class="breadcrumb"><a href="/" data-i18n="breadcrumb_home">Accueil</a><span class="breadcrumb-sep">/</span><span data-i18n="breadcrumb_pourqui">Pour qui</span></p>
+  <h1 data-reveal><em data-i18n="hero_em">Trouvez</em> <span data-i18n="hero_h1">votre configuration.</span></h1>
+  <p class="page-hero-sub" data-reveal data-reveal-delay="1" data-i18n="hero_sub">Tsuno s'adapte à votre réalité terrain — que vous gériez un seul établissement avec passion ou piloter un réseau de cent sites à la performance.</p>
+  <div class="hero-nav-pills" data-reveal data-reveal-delay="2">
+    <a href="#independant" class="pill active"><span class="pill-dot ind"></span><span data-i18n="pill_ind">Indépendant</span></a>
+    <a href="#franchise" class="pill"><span class="pill-dot fra"></span><span data-i18n="pill_fra">Franchise</span></a>
+    <a href="#groupe" class="pill"><span class="pill-dot grp"></span><span data-i18n="pill_grp">Groupe</span></a>
+  </div>
+</section>
+
+<!-- ═══ PROFILE 1 : INDÉPENDANT ═══ -->
+<section class="profile-section dark" id="independant">
+  <div class="profile-inner">
+    <div class="profile-left">
+      <p class="profile-label label-ind" data-reveal><span class="label-line"></span><span data-i18n="ind_label">Profil 01 — Indépendant</span></p>
+      <h2 class="profile-title" data-reveal data-reveal-delay="1"><span data-i18n="ind_title">Gérez sans vous</span><br><em data-i18n="ind_title_em">épuiser.</em></h2>
+      <p class="profile-size" data-reveal data-reveal-delay="1" data-i18n="ind_size">1 à 3 établissements · Équipe de 4 à 25 personnes</p>
+      <p class="profile-intro" data-reveal data-reveal-delay="2" data-i18n="ind_intro">Vous êtes aux fourneaux et dans les papiers en même temps. Former quelqu'un prend deux semaines, un désaccord sur les procédures coûte des clients, et les audits sanitaires font toujours peser une pression sur la brigade. Tsuno, c'est votre second manager.</p>
+      <div class="profile-blocks">
+        <div class="block pain" data-reveal data-reveal-delay="3">
+          <p class="block-label block-label-pain"><span>⚡</span><span data-i18n="block_pain">Problèmes reconnus</span></p>
+          <ul class="block-list pain">
+            <li data-i18n="ind_pain_1">Onboarding improvisé — chaque nouvel arrivant apprend "à sa façon"</li>
+            <li data-i18n="ind_pain_2">Pas de traçabilité HACCP fiable, l'audit DDPP crée du stress</li>
+            <li data-i18n="ind_pain_3">Turnover élevé : trop de temps perdu à reformer les mêmes gestes</li>
+            <li data-i18n="ind_pain_4">Recrutement artisanal — annonces sur Instagram, pas de suivi candidat</li>
+          </ul>
+        </div>
+        <div class="block gain" data-reveal data-reveal-delay="4">
+          <p class="block-label block-label-gain"><span>✦</span><span data-i18n="block_gain">Ce que Tsuno change</span></p>
+          <ul class="block-list gain">
+            <li data-i18n="ind_gain_1">Livret d'accueil digital en 20 min — personnalisé à votre établissement</li>
+            <li data-i18n="ind_gain_2">Grilles d'audit HACCP préconfigurées, exports PDF en un tap</li>
+            <li data-i18n="ind_gain_3">Modules de formation courts, suivis automatiquement par collaborateur</li>
+            <li data-i18n="ind_gain_4">Pipeline de recrutement simple, scoring candidat IA inclus</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="profile-right">
+      <div class="profile-metric-row" data-reveal>
+        <div class="metric-card metric-ind">
+          <span class="metric-num">3j</span>
+          <span class="metric-label" data-i18n="ind_m1">Onboarding opérationnel contre 2 semaines avant</span>
+        </div>
+        <div class="metric-card metric-ind">
+          <span class="metric-num">−62%</span>
+          <span class="metric-label" data-i18n="ind_m2">Erreurs de traçabilité HACCP</span>
+        </div>
+        <div class="metric-card metric-ind">
+          <span class="metric-num">36</span>
+          <span class="metric-label" data-i18n="ind_m3">Modules prêts à l'emploi dans la bibliothèque</span>
+        </div>
+        <div class="metric-card metric-ind">
+          <span class="metric-num">J+1</span>
+          <span class="metric-label" data-i18n="ind_m4">Déploiement — aucune installation requise</span>
+        </div>
+      </div>
+      <div class="profile-features" data-reveal data-reveal-delay="1">
+        <div class="feat-item">
+          <span class="feat-icon">🎯</span>
+          <div class="feat-text">
+            <span class="feat-name" data-i18n="ind_f1_name">Onboarding IA</span>
+            <span class="feat-desc" data-i18n="ind_f1_desc">Livret d'accueil généré par IA, quiz intégrés, signature électronique</span>
+          </div>
+        </div>
+        <div class="feat-item">
+          <span class="feat-icon">📋</span>
+          <div class="feat-text">
+            <span class="feat-name" data-i18n="ind_f2_name">Audit Qualité</span>
+            <span class="feat-desc" data-i18n="ind_f2_desc">100+ critères HACCP, grilles personnalisables, rapport PDF instantané</span>
+          </div>
+        </div>
+        <div class="feat-item">
+          <span class="feat-icon">📚</span>
+          <div class="feat-text">
+            <span class="feat-name" data-i18n="ind_f3_name">Formation</span>
+            <span class="feat-desc" data-i18n="ind_f3_desc">Bibliothèque restauration, certification possible, accès mobile 24/7</span>
+          </div>
+        </div>
+        <div class="feat-item">
+          <span class="feat-icon">💼</span>
+          <div class="feat-text">
+            <span class="feat-name" data-i18n="ind_f4_name">Recrutement</span>
+            <span class="feat-desc" data-i18n="ind_f4_desc">Pipeline candidats, scoring IA, planning entretiens (Q3 2026)</span>
+          </div>
+        </div>
+      </div>
+      <blockquote class="profile-quote ind" data-reveal data-reveal-delay="2">
+        <span data-i18n="ind_quote">"Avant Tsuno, chaque nouveau serveur apprenait les procédures différemment. Maintenant tout le monde part du même livret, et moi je ne passe plus mes samedis à former."</span>
+        <p class="quote-author" data-i18n="ind_quote_author">Responsable d'un restaurant bistronomique, Lyon 2e</p>
+      </blockquote>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PROFILE 2 : FRANCHISE ═══ -->
+<section class="profile-section cream" id="franchise">
+  <div class="profile-inner reverse">
+    <div class="profile-left">
+      <p class="profile-label label-fra" data-reveal><span class="label-line"></span><span data-i18n="fra_label">Profil 02 — Franchise</span></p>
+      <h2 class="profile-title" data-reveal data-reveal-delay="1"><span data-i18n="fra_title">Uniformisez sans</span><br><em data-i18n="fra_title_em">rigidifier.</em></h2>
+      <p class="profile-size" data-reveal data-reveal-delay="1" data-i18n="fra_size">4 à 20 établissements · Managers de site + équipes cuisine/salle</p>
+      <p class="profile-intro" data-reveal data-reveal-delay="2" data-i18n="fra_intro">Vous avez un concept fort, mais chaque franchisé l'interprète à sa façon. La qualité oscille entre les sites, les onboardings varient selon le manager du moment, et vous n'avez pas de vision consolidée des scores et des incidents. Tsuno rend votre concept reproductible — sans étouffer l'autonomie locale.</p>
+      <div class="profile-blocks">
+        <div class="block pain" data-reveal data-reveal-delay="3">
+          <p class="block-label block-label-pain"><span>⚡</span><span data-i18n="block_pain">Problèmes reconnus</span></p>
+          <ul class="block-list pain">
+            <li data-i18n="fra_pain_1">Hétérogénéité : chaque site onboarde à sa façon, qualité inégale</li>
+            <li data-i18n="fra_pain_2">Pas de tableau de bord consolidé — vous pilotez à l'aveugle</li>
+            <li data-i18n="fra_pain_3">Formation difficile à standardiser sans LMS dédié, coûteux</li>
+            <li data-i18n="fra_pain_4">Compliance réseau difficile à prouver lors d'un audit de tête de réseau</li>
+          </ul>
+        </div>
+        <div class="block gain" data-reveal data-reveal-delay="4">
+          <p class="block-label block-label-gain"><span>✦</span><span data-i18n="block_gain">Ce que Tsuno change</span></p>
+          <ul class="block-list gain">
+            <li data-i18n="fra_gain_1">Templates réseau partagés, déployés sur tous les sites en un clic</li>
+            <li data-i18n="fra_gain_2">Dashboard multi-sites : scores d'audit, taux de complétion, alertes</li>
+            <li data-i18n="fra_gain_3">Formation centralisée avec suivi individuel par collaborateur</li>
+            <li data-i18n="fra_gain_4">Historique complet des audits — preuve de compliance instantanée</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="profile-right">
+      <div class="profile-metric-row" data-reveal>
+        <div class="metric-card metric-fra">
+          <span class="metric-num">×8</span>
+          <span class="metric-label" data-i18n="fra_m1">Gain de vitesse à l'onboarding multi-sites</span>
+        </div>
+        <div class="metric-card metric-fra">
+          <span class="metric-num">100%</span>
+          <span class="metric-label" data-i18n="fra_m2">Traçabilité HACCP unifiée sur tous les sites</span>
+        </div>
+        <div class="metric-card metric-fra">
+          <span class="metric-num">1 hub</span>
+          <span class="metric-label" data-i18n="fra_m3">Pour gérer formation, audit et onboarding réseau</span>
+        </div>
+        <div class="metric-card metric-fra">
+          <span class="metric-num">−40%</span>
+          <span class="metric-label" data-i18n="fra_m4">Temps RH consacré aux tâches administratives terrain</span>
+        </div>
+      </div>
+      <div class="profile-features" data-reveal data-reveal-delay="1">
+        <div class="feat-item">
+          <span class="feat-icon">🏢</span>
+          <div class="feat-text">
+            <span class="feat-name" data-i18n="fra_f1_name">Templates Réseau</span>
+            <span class="feat-desc" data-i18n="fra_f1_desc">Procédures, livrets, grilles d'audit — un template, tous les sites</span>
+          </div>
+        </div>
+        <div class="feat-item">
+          <span class="feat-icon">📊</span>
+          <div class="feat-text">
+            <span class="feat-name" data-i18n="fra_f2_name">Analytics Multi-sites</span>
+            <span class="feat-desc" data-i18n="fra_f2_desc">Scores comparatifs, tendances, alertes anomalies par site</span>
+          </div>
+        </div>
+        <div class="feat-item">
+          <span class="feat-icon">🎓</span>
+          <div class="feat-text">
+            <span class="feat-name" data-i18n="fra_f3_name">LMS intégré</span>
+            <span class="feat-desc" data-i18n="fra_f3_desc">Parcours certifiants, suivi réseau, aucun outil tiers requis</span>
+          </div>
+        </div>
+        <div class="feat-item">
+          <span class="feat-icon">🔒</span>
+          <div class="feat-text">
+            <span class="feat-name" data-i18n="fra_f4_name">Compliance & Audit</span>
+            <span class="feat-desc" data-i18n="fra_f4_desc">Historique complet, exports DDPP-ready, gestion des non-conformités</span>
+          </div>
+        </div>
+      </div>
+      <blockquote class="profile-quote fra" data-reveal data-reveal-delay="2">
+        <span data-i18n="fra_quote">"On a déployé Tsuno sur 11 restaurants en deux semaines. Le dashboard consolidé nous a permis de voir en temps réel quels sites avaient des lacunes — c'est ce qu'on cherchait depuis des années."</span>
+        <p class="quote-author" data-i18n="fra_quote_author">Directrice des Opérations, chaîne franchise fast-casual, Paris</p>
+      </blockquote>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PROFILE 3 : GROUPE ═══ -->
+<section class="profile-section dark" id="groupe">
+  <div class="profile-inner">
+    <div class="profile-left">
+      <p class="profile-label label-grp" data-reveal><span class="label-line"></span><span data-i18n="grp_label">Profil 03 — Groupe</span></p>
+      <h2 class="profile-title" data-reveal data-reveal-delay="1"><span data-i18n="grp_title">Pilotez à</span><br><em data-i18n="grp_title_em">l'échelle.</em></h2>
+      <p class="profile-size" data-reveal data-reveal-delay="1" data-i18n="grp_size">20+ établissements · DRH, directeurs régionaux, managers de site</p>
+      <p class="profile-intro" data-reveal data-reveal-delay="2" data-i18n="grp_intro">À cette taille, le risque n'est plus l'improvisation locale — c'est l'accumulation de micro-déviations que personne ne voit. Un incident sanitaire sur un site couvre l'ensemble de la marque. La RH devient un flux de données massif. Tsuno est la couche de pilotage qui manquait à votre stack.</p>
+      <div class="profile-blocks">
+        <div class="block pain" data-reveal data-reveal-delay="3">
+          <p class="block-label block-label-pain"><span>⚡</span><span data-i18n="block_pain">Problèmes reconnus</span></p>
+          <ul class="block-list pain">
+            <li data-i18n="grp_pain_1">Milliers de collaborateurs, zéro visibilité consolidée sur la compétence</li>
+            <li data-i18n="grp_pain_2">Outils RH fragmentés (SIRH, LMS, audit séparés) — données en silos</li>
+            <li data-i18n="grp_pain_3">Gestion des non-conformités réactive, jamais prédictive</li>
+            <li data-i18n="grp_pain_4">Déploiement de nouvelles procédures : lent, mal suivi, inégal</li>
+          </ul>
+        </div>
+        <div class="block gain" data-reveal data-reveal-delay="4">
+          <p class="block-label block-label-gain"><span>✦</span><span data-i18n="block_gain">Ce que Tsuno change</span></p>
+          <ul class="block-list gain">
+            <li data-i18n="grp_gain_1">Plateforme unifiée : onboarding, formation, audit, recrutement, analytics</li>
+            <li data-i18n="grp_gain_2">IA prédictive : détecte les sites à risque avant l'incident</li>
+            <li data-i18n="grp_gain_3">Déploiement d'une procédure sur 50 sites simultanément</li>
+            <li data-i18n="grp_gain_4">Intégrations SIRH sur mesure — Tsuno parle à votre stack existant</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="profile-right">
+      <div class="profile-metric-row" data-reveal>
+        <div class="metric-card metric-grp">
+          <span class="metric-num">50+</span>
+          <span class="metric-label" data-i18n="grp_m1">Sites pilotés depuis un seul dashboard</span>
+        </div>
+        <div class="metric-card metric-grp">
+          <span class="metric-num">IA</span>
+          <span class="metric-label" data-i18n="grp_m2">Détection prédictive des sites à risque</span>
+        </div>
+        <div class="metric-card metric-grp">
+          <span class="metric-num">1 h</span>
+          <span class="metric-label" data-i18n="grp_m3">Pour déployer une nouvelle procédure sur tout le réseau</span>
+        </div>
+        <div class="metric-card metric-grp">
+          <span class="metric-num">API</span>
+          <span class="metric-label" data-i18n="grp_m4">Intégration native avec votre SIRH et vos outils RH</span>
+        </div>
+      </div>
+      <div class="profile-features" data-reveal data-reveal-delay="1">
+        <div class="feat-item">
+          <span class="feat-icon">🧠</span>
+          <div class="feat-text">
+            <span class="feat-name" data-i18n="grp_f1_name">IA Prédictive</span>
+            <span class="feat-desc" data-i18n="grp_f1_desc">Détection d'anomalies, scoring de risque par site, recommandations</span>
+          </div>
+        </div>
+        <div class="feat-item">
+          <span class="feat-icon">🔗</span>
+          <div class="feat-text">
+            <span class="feat-name" data-i18n="grp_f2_name">Intégrations SIRH</span>
+            <span class="feat-desc" data-i18n="grp_f2_desc">Connecteurs Silae, Sage, Cegid, API REST ouverte</span>
+          </div>
+        </div>
+        <div class="feat-item">
+          <span class="feat-icon">🗺️</span>
+          <div class="feat-text">
+            <span class="feat-name" data-i18n="grp_f3_name">Vue Régionale</span>
+            <span class="feat-desc" data-i18n="grp_f3_desc">Filtres directeur régional, benchmarks inter-sites, heat-map réseau</span>
+          </div>
+        </div>
+        <div class="feat-item">
+          <span class="feat-icon">🚀</span>
+          <div class="feat-text">
+            <span class="feat-name" data-i18n="grp_f4_name">Déploiement Massif</span>
+            <span class="feat-desc" data-i18n="grp_f4_desc">Push de contenu sur N sites, accusés de réception, rapports d'avancement</span>
+          </div>
+        </div>
+      </div>
+      <blockquote class="profile-quote grp" data-reveal data-reveal-delay="2">
+        <span data-i18n="grp_quote">"Nous avions trois outils différents pour la formation, l'audit et les RH. Tsuno a unifié tout ça. Nos directeurs régionaux ont une vision claire, nos équipes terrain ont tout dans une seule app."</span>
+        <p class="quote-author" data-i18n="grp_quote_author">DRH Groupe, restauration collective, 38 établissements</p>
+      </blockquote>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARISON TABLE -->
+<section class="comparison-wrap">
+  <div class="comparison-inner">
+    <span class="section-eyebrow" data-i18n="comp_eyebrow">Comparatif</span>
+    <h2 class="section-title" data-i18n="comp_title">Ce qui est inclus dans chaque configuration.</h2>
+    <p class="section-sub" data-i18n="comp_sub">Toutes les configurations accèdent au même moteur Tsuno. La différence tient au périmètre multi-sites et aux fonctionnalités de pilotage réseau.</p>
+    <table class="comp-table">
+      <thead>
+        <tr>
+          <th data-i18n="comp_feature">Fonctionnalité</th>
+          <th class="th-ind" data-i18n="comp_ind">Indépendant</th>
+          <th class="th-fra" data-i18n="comp_fra">Franchise</th>
+          <th class="th-grp" data-i18n="comp_grp">Groupe</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td data-i18n="ct_1">Onboarding IA (livret, quiz, signature)</td><td><span class="check">✓</span></td><td><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
+        <tr><td data-i18n="ct_2">Formation — bibliothèque 36 modules</td><td><span class="check">✓</span></td><td><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
+        <tr><td data-i18n="ct_3">Audit Qualité — 100+ critères HACCP</td><td><span class="check">✓</span></td><td><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
+        <tr><td data-i18n="ct_4">Recrutement & Scoring candidats IA</td><td><span class="opt">Q3 2026</span></td><td><span class="opt">Q3 2026</span></td><td><span class="opt">Q3 2026</span></td></tr>
+        <tr><td data-i18n="ct_5">Analytics mono-site</td><td><span class="check">✓</span></td><td><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
+        <tr><td data-i18n="ct_6">Templates réseau partagés</td><td><span class="cross">—</span></td><td><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
+        <tr><td data-i18n="ct_7">Dashboard multi-sites consolidé</td><td><span class="cross">—</span></td><td><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
+        <tr><td data-i18n="ct_8">Benchmarks & alertes inter-sites</td><td><span class="cross">—</span></td><td><span class="opt">Partiel</span></td><td><span class="check">✓</span></td></tr>
+        <tr><td data-i18n="ct_9">IA prédictive — détection sites à risque</td><td><span class="cross">—</span></td><td><span class="cross">—</span></td><td><span class="check">✓</span></td></tr>
+        <tr><td data-i18n="ct_10">Intégrations SIRH (API, Silae, Sage…)</td><td><span class="cross">—</span></td><td><span class="opt">Sur mesure</span></td><td><span class="check">✓</span></td></tr>
+        <tr><td data-i18n="ct_11">Vue régionale & heat-map réseau</td><td><span class="cross">—</span></td><td><span class="cross">—</span></td><td><span class="check">✓</span></td></tr>
+        <tr><td data-i18n="ct_12">Customer Success Manager dédié</td><td><span class="cross">—</span></td><td><span class="opt">Partagé</span></td><td><span class="check">✓</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- CTA BAND -->
+<section class="cta-band">
+  <div class="cta-band-inner">
+    <h2 data-reveal><span data-i18n="cta_h2_1">VOTRE CONFIGURATION,</span><br><em data-i18n="cta_h2_em">votre démo.</em></h2>
+    <p data-reveal data-reveal-delay="1" data-i18n="cta_sub">30 minutes, sans engagement. On adapte la démo à votre taille et à vos enjeux terrain.</p>
+    <button class="btn-dark" data-reveal data-reveal-delay="2" onclick="openTally()">
+      <span data-i18n="cta_btn">Réserver ma démo</span> →
+    </button>
+    <p class="cta-sub" data-i18n="cta_hint">Réponse sous 24h · Aucune carte bleue</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a href="/" class="nav-logo" style="font-size:1.4rem">tsuno<span>.</span></a>
+      <p data-i18n="footer_tagline">La plateforme RH de la restauration, propulsée par l'IA.</p>
+    </div>
+    <div class="footer-col">
+      <h4 data-i18n="footer_product">Produit</h4>
+      <ul>
+        <li><a href="/solution.html" data-i18n="nav_solution">Solution</a></li>
+        <li><a href="/pour-qui.html" data-i18n="nav_pourqui">Pour qui</a></li>
+        <li><a href="/#ia" data-i18n="footer_ia">IA Tsuno</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4 data-i18n="footer_company">Entreprise</h4>
+      <ul>
+        <li><a href="/#manifesto" data-i18n="nav_manifesto">Manifeste</a></li>
+        <li><a href="/#faq">FAQ</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4 data-i18n="footer_legal">Légal</h4>
+      <ul>
+        <li><a href="/mentions-legales.html" data-i18n="footer_mentions">Mentions légales</a></li>
+        <li><a href="/politique-de-confidentialite.html" data-i18n="footer_privacy">Confidentialité</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 SAS http5000 — Tsuno · SIRET 431 903 376 00033</p>
+    <p data-i18n="footer_made">Fait avec ♥ à Lyon</p>
+  </div>
+</footer>
+
+<!-- COOKIE BANNER -->
+<div id="cookie-banner" style="display:none">
+  <p data-i18n="cookie_text">Nous utilisons des cookies pour améliorer votre expérience. <a href="/politique-de-confidentialite.html" data-i18n="cookie_link">En savoir plus.</a></p>
+  <button id="cookie-ok" data-i18n="cookie_ok">Accepter</button>
+</div>
+
+<script>
+// ═══ TALLY ═══
+const TALLY_FORM_ID="0Q1YOQ";
+function openTally(){if(window.Tally){Tally.openPopup(TALLY_FORM_ID,{width:480,emoji:{text:"👋",animation:"wave"}})}else{window.open("https://tally.so/r/"+TALLY_FORM_ID,"_blank")}}
+
+// ═══ i18n ═══
+const translations={
+  fr:{
+    nav_home:"Accueil",nav_solution:"Solution",nav_pourqui:"Pour qui",nav_manifesto:"Manifeste",nav_faq:"FAQ",nav_cta:"Démo gratuite",
+    breadcrumb_home:"Accueil",breadcrumb_pourqui:"Pour qui",
+    hero_em:"Trouvez",hero_h1:"votre configuration.",
+    hero_sub:"Tsuno s'adapte à votre réalité terrain — que vous gériez un seul établissement avec passion ou piloter un réseau de cent sites à la performance.",
+    pill_ind:"Indépendant",pill_fra:"Franchise",pill_grp:"Groupe",
+    ind_label:"Profil 01 — Indépendant",ind_title:"Gérez sans vous",ind_title_em:"épuiser.",
+    ind_size:"1 à 3 établissements · Équipe de 4 à 25 personnes",
+    ind_intro:"Vous êtes aux fourneaux et dans les papiers en même temps. Former quelqu'un prend deux semaines, un désaccord sur les procédures coûte des clients, et les audits sanitaires font toujours peser une pression sur la brigade. Tsuno, c'est votre second manager.",
+    block_pain:"Problèmes reconnus",block_gain:"Ce que Tsuno change",
+    ind_pain_1:"Onboarding improvisé — chaque nouvel arrivant apprend « à sa façon »",
+    ind_pain_2:"Pas de traçabilité HACCP fiable, l'audit DDPP crée du stress",
+    ind_pain_3:"Turnover élevé : trop de temps perdu à reformer les mêmes gestes",
+    ind_pain_4:"Recrutement artisanal — annonces sur Instagram, pas de suivi candidat",
+    ind_gain_1:"Livret d'accueil digital en 20 min — personnalisé à votre établissement",
+    ind_gain_2:"Grilles d'audit HACCP préconfigurées, exports PDF en un tap",
+    ind_gain_3:"Modules de formation courts, suivis automatiquement par collaborateur",
+    ind_gain_4:"Pipeline de recrutement simple, scoring candidat IA inclus",
+    ind_m1:"Onboarding opérationnel contre 2 semaines avant",
+    ind_m2:"Erreurs de traçabilité HACCP",
+    ind_m3:"Modules prêts à l'emploi dans la bibliothèque",
+    ind_m4:"Déploiement — aucune installation requise",
+    ind_f1_name:"Onboarding IA",ind_f1_desc:"Livret d'accueil généré par IA, quiz intégrés, signature électronique",
+    ind_f2_name:"Audit Qualité",ind_f2_desc:"100+ critères HACCP, grilles personnalisables, rapport PDF instantané",
+    ind_f3_name:"Formation",ind_f3_desc:"Bibliothèque restauration, certification possible, accès mobile 24/7",
+    ind_f4_name:"Recrutement",ind_f4_desc:"Pipeline candidats, scoring IA, planning entretiens (Q3 2026)",
+    ind_quote:""Avant Tsuno, chaque nouveau serveur apprenait les procédures différemment. Maintenant tout le monde part du même livret, et moi je ne passe plus mes samedis à former."",
+    ind_quote_author:"Responsable d'un restaurant bistronomique, Lyon 2e",
+    fra_label:"Profil 02 — Franchise",fra_title:"Uniformisez sans",fra_title_em:"rigidifier.",
+    fra_size:"4 à 20 établissements · Managers de site + équipes cuisine/salle",
+    fra_intro:"Vous avez un concept fort, mais chaque franchisé l'interprète à sa façon. La qualité oscille entre les sites, les onboardings varient selon le manager du moment, et vous n'avez pas de vision consolidée des scores et des incidents. Tsuno rend votre concept reproductible — sans étouffer l'autonomie locale.",
+    fra_pain_1:"Hétérogénéité : chaque site onboarde à sa façon, qualité inégale",
+    fra_pain_2:"Pas de tableau de bord consolidé — vous pilotez à l'aveugle",
+    fra_pain_3:"Formation difficile à standardiser sans LMS dédié, coûteux",
+    fra_pain_4:"Compliance réseau difficile à prouver lors d'un audit de tête de réseau",
+    fra_gain_1:"Templates réseau partagés, déployés sur tous les sites en un clic",
+    fra_gain_2:"Dashboard multi-sites : scores d'audit, taux de complétion, alertes",
+    fra_gain_3:"Formation centralisée avec suivi individuel par collaborateur",
+    fra_gain_4:"Historique complet des audits — preuve de compliance instantanée",
+    fra_m1:"Gain de vitesse à l'onboarding multi-sites",
+    fra_m2:"Traçabilité HACCP unifiée sur tous les sites",
+    fra_m3:"Pour gérer formation, audit et onboarding réseau",
+    fra_m4:"Temps RH consacré aux tâches administratives terrain",
+    fra_f1_name:"Templates Réseau",fra_f1_desc:"Procédures, livrets, grilles d'audit — un template, tous les sites",
+    fra_f2_name:"Analytics Multi-sites",fra_f2_desc:"Scores comparatifs, tendances, alertes anomalies par site",
+    fra_f3_name:"LMS intégré",fra_f3_desc:"Parcours certifiants, suivi réseau, aucun outil tiers requis",
+    fra_f4_name:"Compliance & Audit",fra_f4_desc:"Historique complet, exports DDPP-ready, gestion des non-conformités",
+    fra_quote:""On a déployé Tsuno sur 11 restaurants en deux semaines. Le dashboard consolidé nous a permis de voir en temps réel quels sites avaient des lacunes — c'est ce qu'on cherchait depuis des années."",
+    fra_quote_author:"Directrice des Opérations, chaîne franchise fast-casual, Paris",
+    grp_label:"Profil 03 — Groupe",grp_title:"Pilotez à",grp_title_em:"l'échelle.",
+    grp_size:"20+ établissements · DRH, directeurs régionaux, managers de site",
+    grp_intro:"À cette taille, le risque n'est plus l'improvisation locale — c'est l'accumulation de micro-déviations que personne ne voit. Un incident sanitaire sur un site couvre l'ensemble de la marque. La RH devient un flux de données massif. Tsuno est la couche de pilotage qui manquait à votre stack.",
+    grp_pain_1:"Milliers de collaborateurs, zéro visibilité consolidée sur la compétence",
+    grp_pain_2:"Outils RH fragmentés (SIRH, LMS, audit séparés) — données en silos",
+    grp_pain_3:"Gestion des non-conformités réactive, jamais prédictive",
+    grp_pain_4:"Déploiement de nouvelles procédures : lent, mal suivi, inégal",
+    grp_gain_1:"Plateforme unifiée : onboarding, formation, audit, recrutement, analytics",
+    grp_gain_2:"IA prédictive : détecte les sites à risque avant l'incident",
+    grp_gain_3:"Déploiement d'une procédure sur 50 sites simultanément",
+    grp_gain_4:"Intégrations SIRH sur mesure — Tsuno parle à votre stack existant",
+    grp_m1:"Sites pilotés depuis un seul dashboard",
+    grp_m2:"Détection prédictive des sites à risque",
+    grp_m3:"Pour déployer une nouvelle procédure sur tout le réseau",
+    grp_m4:"Intégration native avec votre SIRH et vos outils RH",
+    grp_f1_name:"IA Prédictive",grp_f1_desc:"Détection d'anomalies, scoring de risque par site, recommandations",
+    grp_f2_name:"Intégrations SIRH",grp_f2_desc:"Connecteurs Silae, Sage, Cegid, API REST ouverte",
+    grp_f3_name:"Vue Régionale",grp_f3_desc:"Filtres directeur régional, benchmarks inter-sites, heat-map réseau",
+    grp_f4_name:"Déploiement Massif",grp_f4_desc:"Push de contenu sur N sites, accusés de réception, rapports d'avancement",
+    grp_quote:""Nous avions trois outils différents pour la formation, l'audit et les RH. Tsuno a unifié tout ça. Nos directeurs régionaux ont une vision claire, nos équipes terrain ont tout dans une seule app."",
+    grp_quote_author:"DRH Groupe, restauration collective, 38 établissements",
+    comp_eyebrow:"Comparatif",comp_title:"Ce qui est inclus dans chaque configuration.",
+    comp_sub:"Toutes les configurations accèdent au même moteur Tsuno. La différence tient au périmètre multi-sites et aux fonctionnalités de pilotage réseau.",
+    comp_feature:"Fonctionnalité",comp_ind:"Indépendant",comp_fra:"Franchise",comp_grp:"Groupe",
+    ct_1:"Onboarding IA (livret, quiz, signature)",ct_2:"Formation — bibliothèque 36 modules",
+    ct_3:"Audit Qualité — 100+ critères HACCP",ct_4:"Recrutement & Scoring candidats IA",
+    ct_5:"Analytics mono-site",ct_6:"Templates réseau partagés",ct_7:"Dashboard multi-sites consolidé",
+    ct_8:"Benchmarks & alertes inter-sites",ct_9:"IA prédictive — détection sites à risque",
+    ct_10:"Intégrations SIRH (API, Silae, Sage…)",ct_11:"Vue régionale & heat-map réseau",
+    ct_12:"Customer Success Manager dédié",
+    cta_h2_1:"VOTRE CONFIGURATION,",cta_h2_em:"votre démo.",
+    cta_sub:"30 minutes, sans engagement. On adapte la démo à votre taille et à vos enjeux terrain.",
+    cta_btn:"Réserver ma démo",cta_hint:"Réponse sous 24h · Aucune carte bleue",
+    footer_tagline:"La plateforme RH de la restauration, propulsée par l'IA.",
+    footer_product:"Produit",footer_company:"Entreprise",footer_legal:"Légal",
+    footer_ia:"IA Tsuno",footer_mentions:"Mentions légales",footer_privacy:"Confidentialité",footer_made:"Fait avec ♥ à Lyon",
+    cookie_text:"Nous utilisons des cookies pour améliorer votre expérience.",
+    cookie_link:"En savoir plus.",cookie_ok:"Accepter"
+  },
+  en:{
+    nav_home:"Home",nav_solution:"Solution",nav_pourqui:"For whom",nav_manifesto:"Manifesto",nav_faq:"FAQ",nav_cta:"Free demo",
+    breadcrumb_home:"Home",breadcrumb_pourqui:"For whom",
+    hero_em:"Find",hero_h1:"your configuration.",
+    hero_sub:"Tsuno adapts to your reality on the ground — whether you manage a single passionate establishment or drive a network of a hundred sites to performance.",
+    pill_ind:"Independent",pill_fra:"Franchise",pill_grp:"Group",
+    ind_label:"Profile 01 — Independent",ind_title:"Manage without burning",ind_title_em:"yourself out.",
+    ind_size:"1 to 3 venues · Team of 4 to 25 people",
+    ind_intro:"You're in the kitchen and buried in paperwork at the same time. Training someone takes two weeks, disagreements on procedures cost you customers, and health audits always put pressure on the brigade. Tsuno is your second manager.",
+    block_pain:"Recognised pain points",block_gain:"What Tsuno changes",
+    ind_pain_1:"Improvised onboarding — every new hire learns \"their own way\"",
+    ind_pain_2:"No reliable HACCP traceability, health inspections create stress",
+    ind_pain_3:"High turnover: too much time wasted retraining the same skills",
+    ind_pain_4:"Artisanal hiring — Instagram posts, no candidate tracking",
+    ind_gain_1:"Digital welcome booklet in 20 min — personalised to your venue",
+    ind_gain_2:"Pre-configured HACCP audit grids, PDF exports in one tap",
+    ind_gain_3:"Short training modules, automatically tracked per team member",
+    ind_gain_4:"Simple hiring pipeline with AI candidate scoring included",
+    ind_m1:"Operational onboarding vs 2 weeks before",
+    ind_m2:"HACCP traceability errors reduced",
+    ind_m3:"Ready-to-use modules in the library",
+    ind_m4:"Deployment — no installation required",
+    ind_f1_name:"AI Onboarding",ind_f1_desc:"AI-generated welcome booklet, integrated quizzes, e-signature",
+    ind_f2_name:"Quality Audit",ind_f2_desc:"100+ HACCP criteria, customisable grids, instant PDF report",
+    ind_f3_name:"Training",ind_f3_desc:"Restaurant library, possible certification, mobile access 24/7",
+    ind_f4_name:"Hiring",ind_f4_desc:"Candidate pipeline, AI scoring, interview scheduling (Q3 2026)",
+    ind_quote:""Before Tsuno, every new server learned procedures differently. Now everyone starts from the same booklet, and I don't spend my Saturdays training anymore."",
+    ind_quote_author:"Manager of a bistronomic restaurant, Lyon",
+    fra_label:"Profile 02 — Franchise",fra_title:"Standardise without",fra_title_em:"rigidifying.",
+    fra_size:"4 to 20 venues · Site managers + kitchen/floor teams",
+    fra_intro:"You have a strong concept, but each franchisee interprets it their own way. Quality varies between sites, onboarding changes depending on the current manager, and you have no consolidated view of scores and incidents. Tsuno makes your concept repeatable — without stifling local autonomy.",
+    fra_pain_1:"Inconsistency: each site onboards its own way, uneven quality",
+    fra_pain_2:"No consolidated dashboard — you're flying blind",
+    fra_pain_3:"Hard to standardise training without a dedicated, expensive LMS",
+    fra_pain_4:"Network compliance hard to prove during a head-office audit",
+    fra_gain_1:"Shared network templates, deployed across all sites in one click",
+    fra_gain_2:"Multi-site dashboard: audit scores, completion rates, alerts",
+    fra_gain_3:"Centralised training with individual tracking per team member",
+    fra_gain_4:"Full audit history — instant compliance proof",
+    fra_m1:"Speed gain for multi-site onboarding",
+    fra_m2:"Unified HACCP traceability across all sites",
+    fra_m3:"One hub for training, audit and network onboarding",
+    fra_m4:"HR time spent on administrative field tasks",
+    fra_f1_name:"Network Templates",fra_f1_desc:"Procedures, booklets, audit grids — one template, all sites",
+    fra_f2_name:"Multi-site Analytics",fra_f2_desc:"Comparative scores, trends, anomaly alerts per site",
+    fra_f3_name:"Built-in LMS",fra_f3_desc:"Certified learning paths, network tracking, no third-party tool needed",
+    fra_f4_name:"Compliance & Audit",fra_f4_desc:"Full history, DDPP-ready exports, non-conformity management",
+    fra_quote:""We deployed Tsuno across 11 restaurants in two weeks. The consolidated dashboard let us see in real time which sites had gaps — that's what we'd been looking for for years."",
+    fra_quote_author:"Director of Operations, fast-casual franchise chain, Paris",
+    grp_label:"Profile 03 — Group",grp_title:"Operate at",grp_title_em:"scale.",
+    grp_size:"20+ venues · HR Directors, regional managers, site managers",
+    grp_intro:"At this size, the risk is no longer local improvisation — it's the accumulation of micro-deviations that nobody sees. A food safety incident at one site tarnishes the whole brand. HR becomes a massive data flow. Tsuno is the control layer your stack was missing.",
+    grp_pain_1:"Thousands of employees, zero consolidated visibility on competency",
+    grp_pain_2:"Fragmented HR tools (HRIS, LMS, audit separated) — data in silos",
+    grp_pain_3:"Non-conformity management is reactive, never predictive",
+    grp_pain_4:"Deploying new procedures: slow, poorly tracked, uneven",
+    grp_gain_1:"Unified platform: onboarding, training, audit, hiring, analytics",
+    grp_gain_2:"Predictive AI: detects at-risk sites before the incident",
+    grp_gain_3:"Deploy a procedure to 50 sites simultaneously",
+    grp_gain_4:"Custom HRIS integrations — Tsuno talks to your existing stack",
+    grp_m1:"Sites managed from a single dashboard",
+    grp_m2:"Predictive detection of at-risk sites",
+    grp_m3:"To deploy a new procedure across the entire network",
+    grp_m4:"Native integration with your HRIS and HR tools",
+    grp_f1_name:"Predictive AI",grp_f1_desc:"Anomaly detection, site risk scoring, recommendations",
+    grp_f2_name:"HRIS Integrations",grp_f2_desc:"Silae, Sage, Cegid connectors, open REST API",
+    grp_f3_name:"Regional View",grp_f3_desc:"Regional manager filters, cross-site benchmarks, network heat-map",
+    grp_f4_name:"Mass Deployment",grp_f4_desc:"Content push to N sites, read receipts, progress reports",
+    grp_quote:""We had three different tools for training, audit and HR. Tsuno unified everything. Our regional directors have a clear view, our field teams have everything in one app."",
+    grp_quote_author:"Group HR Director, contract catering, 38 venues",
+    comp_eyebrow:"Comparison",comp_title:"What's included in each configuration.",
+    comp_sub:"All configurations access the same Tsuno engine. The difference lies in multi-site scope and network management features.",
+    comp_feature:"Feature",comp_ind:"Independent",comp_fra:"Franchise",comp_grp:"Group",
+    ct_1:"AI Onboarding (booklet, quizzes, e-signature)",ct_2:"Training — 36-module library",
+    ct_3:"Quality Audit — 100+ HACCP criteria",ct_4:"Hiring & AI Candidate Scoring",
+    ct_5:"Single-site analytics",ct_6:"Shared network templates",ct_7:"Consolidated multi-site dashboard",
+    ct_8:"Cross-site benchmarks & alerts",ct_9:"Predictive AI — at-risk site detection",
+    ct_10:"HRIS integrations (API, Silae, Sage…)",ct_11:"Regional view & network heat-map",
+    ct_12:"Dedicated Customer Success Manager",
+    cta_h2_1:"YOUR CONFIGURATION,",cta_h2_em:"your demo.",
+    cta_sub:"30 minutes, no commitment. We tailor the demo to your size and your field challenges.",
+    cta_btn:"Book my demo",cta_hint:"Response within 24h · No credit card",
+    footer_tagline:"The HR platform for the restaurant industry, powered by AI.",
+    footer_product:"Product",footer_company:"Company",footer_legal:"Legal",
+    footer_ia:"Tsuno AI",footer_mentions:"Legal notice",footer_privacy:"Privacy",footer_made:"Made with ♥ in Lyon",
+    cookie_text:"We use cookies to improve your experience.",
+    cookie_link:"Learn more.",cookie_ok:"Accept"
+  }
+};
+let currentLang="fr";
+function setLang(lang){
+  currentLang=lang;
+  document.documentElement.lang=lang;
+  document.getElementById("btnFr").setAttribute("aria-pressed",lang==="fr");
+  document.getElementById("btnEn").setAttribute("aria-pressed",lang==="en");
+  document.querySelectorAll("[data-i18n]").forEach(el=>{
+    const k=el.getAttribute("data-i18n");
+    if(translations[lang][k]!==undefined)el.textContent=translations[lang][k];
+  });
+}
+
+// ═══ REVEAL ═══
+const ro=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add("visible")});
+},{threshold:.12});
+document.querySelectorAll("[data-reveal]").forEach(el=>ro.observe(el));
+
+// ═══ PILL ACTIVE ON SCROLL ═══
+const sections=["independant","franchise","groupe"];
+const pills=document.querySelectorAll(".hero-nav-pills .pill");
+const sectionEls=sections.map(id=>document.getElementById(id));
+window.addEventListener("scroll",()=>{
+  let active=0;
+  sectionEls.forEach((el,i)=>{
+    if(el&&window.scrollY+200>=el.offsetTop)active=i;
+  });
+  pills.forEach((p,i)=>p.classList.toggle("active",i===active));
+});
+
+// ═══ COOKIE ═══
+(function(){
+  const b=document.getElementById("cookie-banner");
+  if(!localStorage.getItem("tsuno_cookie_ok")){b.style.display="flex"}
+  document.getElementById("cookie-ok").addEventListener("click",()=>{
+    localStorage.setItem("tsuno_cookie_ok","1");b.style.display="none"
+  });
+})();
+</script>
+<script src="https://tally.so/widgets/embed.js" async></script>
+</body>
+</html>
